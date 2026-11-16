@@ -2457,11 +2457,11 @@ ${v.imagePrompt}
         ...variation,
         variationNumber: index + 1,
         aspectRatio: '4:5',
-        promoPrice: variation.promoPrice || priceValue,
-        priceLabel: estimatedPrice !== null && estimatedPrice !== undefined && (catalogPrice === null || catalogPrice === undefined) ? 'Estimated Price' : (variation.priceLabel || ''),
+        promoPrice: priceValue || variation.promoPrice || '',
+        priceLabel: estimatedPrice !== null && estimatedPrice !== undefined && (catalogPrice === null || catalogPrice === undefined) ? 'Estimated Price' : '',
         priceNote: estimatedPrice !== null && estimatedPrice !== undefined && (catalogPrice === null || catalogPrice === undefined)
           ? 'Unverified estimate — not an official Apple Store Malaysia price.'
-          : (variation.priceNote || ''),
+          : '',
         generatedImageUrl: null,
         imageGenerationError: null,
         qc: { status: 'Pending', attempts: 0, issues: [] }
