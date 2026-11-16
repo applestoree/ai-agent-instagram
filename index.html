@@ -2579,6 +2579,7 @@ ${v.imagePrompt}
         showNotification('error', 'Creative brief required', 'Enter a product, campaign message, or natural-language brief.');
         return;
       }
+      const requiresCategoryReview = input.campaignCategory === 'Auto' || !input.campaignSubcategory;
       appState.isGenerating = true;
       appState.manualRevisionCount = 0;
       appState.variationBatches = [];
@@ -2595,6 +2596,34 @@ ${v.imagePrompt}
         appState.creativeStrategy = result.strategy;
         if (input.campaignCategory !== 'Auto' && appState.campaignBrief.selectedCategory !== input.campaignCategory) throw new Error('AI category does not match the user-selected category.');
         if (input.campaignSubcategory && appState.campaignBrief.selectedSubcategory !== input.campaignSubcategory) throw new Error('AI subcategory does not match the user-selected subcategory.');
+        if (requiresCategoryReview) {
+          const categorySelect = document.getElementById('campaignCategory');
+          const subcategorySelect = document.getElementById('campaignSubcategory');
+          categorySelect.value = appState.campaignBrief.selectedCategory;
+          const guide = await loadCategoryGuide();
+          const guideLines = guide.split(/\\r?\\n/);
+          let activeCategory = null;
+          const subcategoryNames = [];
+          for (const line of guideLines) {
+            const heading = line.match(/^## \\d+\\.\\s+(.+)$/);
+            if (heading) activeCategory = heading[1].trim();
+            else if (activeCategory === appState.campaignBrief.selectedCategory && line.startsWith('|')) {
+              const cells = line.split('|').map(value => value.trim());
+              const name = cells[1];
+              if (name && name !== 'Subcategory Name' && !/^[-:]+$/.test(name)) subcategoryNames.push(name);
+            }
+          }
+          subcategorySelect.innerHTML = '<option value="">Auto — AI selects subcategory</option>';
+          subcategoryNames.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            subcategorySelect.appendChild(option);
+          });
+          subcategorySelect.value = appState.campaignBrief.selectedSubcategory;
+          showNotification('success', 'AI category selection ready', 'AI selected ' + appState.campaignBrief.selectedCategory + ' / ' + appState.campaignBrief.selectedSubcategory + '. Review or change the selection, then click Generate Campaign again to create the three variations.');
+          return;
+        }
         updatePipelineProgress(3, 4, 'Generating exactly three composition-led English variations...');
         appState.variations = await generateCreativeVariations(input, appState.productVerification, appState.campaignBrief, appState.creativeStrategy);
         appState.activeVariationIndex = 0;
