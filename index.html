@@ -2629,7 +2629,6 @@ ${v.imagePrompt}
         updatePipelineProgress(3, 4, 'Generating exactly three composition-led English variations...');
         appState.variations = await generateCreativeVariations(input, appState.productVerification, appState.campaignBrief, appState.creativeStrategy);
         appState.activeVariationIndex = 0;
-        appState.variationBatches.push({ createdAt: new Date().toISOString(), variations: appState.variations.map(v => ({ ...v })) });
         renderStrategySection();
         renderStudioSection();
         switchTab('studio');
