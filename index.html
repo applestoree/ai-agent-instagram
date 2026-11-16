@@ -2283,8 +2283,31 @@ ${v.imagePrompt}
 
     verifyAppleMalaysiaProduct = async function(input) {
       const catalog = await loadProductCatalog();
-      const record = findCatalogProduct(input.productName, catalog);
-      if (!record) {
+      let record = input.productName ? findCatalogProduct(input.productName, catalog) : null;
+      let productSelectionReason = '';
+      if (!input.productName) {
+        const candidates = catalog.map(row => ({
+          name: row['Product Name'],
+          category: row['Product Category'],
+          model: row['Model'],
+          features: row['Product Features'],
+          capabilities: row['Product Capabilities']
+        }));
+        const selectionPrompt = 'Select the most relevant Apple product only from this products.csv catalog for the campaign brief. Do not invent or rename products. If a product is not needed for the selected content objective, return null. User brief: '
+          + JSON.stringify(input) + '\nCatalog: ' + JSON.stringify(candidates)
+          + '\nReturn JSON only: {"productName":"exact Product Name from catalog or null","reason":"short reason"}.';
+        const selectionResponse = await callGeminiWithBackoff('gemini-3-flash-preview', {
+          contents: [{ role: 'user', parts: [{ text: selectionPrompt }] }],
+          generationConfig: { responseMimeType: 'application/json' }
+        });
+        const selectionText = selectionResponse?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (selectionText) {
+          const selection = JSON.parse(selectionText);
+          record = selection.productName ? findCatalogProduct(selection.productName, catalog) : null;
+          productSelectionReason = selection.reason || '';
+        }
+      }
+      if (input.productName && !record) {
         return {
           verifiedProductName: '',
           verifiedCategory: '',
@@ -2295,7 +2318,23 @@ ${v.imagePrompt}
           estimatedPriceMYR: null,
           officialFeatures: [],
           designAndVariants: 'No product visual will be generated because the requested product is not present in products.csv.',
-          verificationNotes: 'Product not found in products.csv. Generate a relevant product-free concept; do not substitute another model.',
+          verificationNotes: 'Requested product not found in products.csv. Generate a relevant product-free concept; do not substitute another model.',
+          sources: [{ title: 'products.csv', uri: './products.csv' }]
+        };
+      }
+      if (!record) {
+        return {
+          verifiedProductName: '',
+          verifiedCategory: '',
+          isRealAppleProduct: false,
+          productNotFound: true,
+          productRecord: null,
+          catalogPriceMYR: null,
+          estimatedPriceMYR: null,
+          officialFeatures: [],
+          designAndVariants: 'The AI did not select a product for this content objective. Generate a product-free concept.',
+          verificationNotes: 'No product selected from products.csv. Do not invent a product.',
+          productSelectionReason: productSelectionReason,
           sources: [{ title: 'products.csv', uri: './products.csv' }]
         };
       }
@@ -2329,6 +2368,7 @@ ${v.imagePrompt}
         isRealAppleProduct: true,
         productNotFound: false,
         productRecord: record,
+        productSelectionReason: productSelectionReason,
         officialFeatures: [record['Product Features'], record['Technical Specifications'], record['Product Capabilities']].filter(v => v && !/^not available$/i.test(v)),
         designAndVariants: [record['Product Design'], record['Available Product Variants'], record['Color & Finish']].filter(Boolean).join(' | '),
         catalogPriceMYR: catalogPrice,
