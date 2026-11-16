@@ -2406,6 +2406,19 @@ ${v.imagePrompt}
       if (!raw) throw new Error('Gemini did not return a campaign brief.');
       const result = JSON.parse(raw);
       if (!CATEGORY_NAMES.includes(result.brief?.selectedCategory)) throw new Error('AI selected a category outside the approved four categories.');
+      const guideLines = guide.split(/\r?\n/);
+      let activeCategory = null;
+      const allowedSubcategories = [];
+      for (const line of guideLines) {
+        const heading = line.match(/^## \d+\.\s+(.+)$/);
+        if (heading) activeCategory = heading[1].trim();
+        else if (activeCategory === result.brief.selectedCategory && line.startsWith('|')) {
+          const cells = line.split('|').map(value => value.trim());
+          const name = cells[1];
+          if (name && name !== 'Subcategory Name' && !/^[-:]+$/.test(name)) allowedSubcategories.push(name);
+        }
+      }
+      if (!allowedSubcategories.includes(result.brief?.selectedSubcategory)) throw new Error('AI selected a subcategory outside category.md.');
       return result;
     };
 
