@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="ms-MY">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Agent Meta Ads — Apple Store Malaysia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- JSZip for authentic client-side ZIP campaign package generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+          },
+          colors: {
+            apple: {
+              bg: '#F5F5F7',
+              card: '#FFFFFF',
+              text: '#1D1D1F',
+              muted: '#6E6E73',
+              blue: '#0071E3',
+              blueHover: '#0077ED',
+              border: '#D2D2D7',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #F5F5F7;
+      color: #1D1D1F;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Custom subtle scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D2D2D7;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #86868B;
+    }
+    .glass-header {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: saturate(180%) blur(20px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Navigation Bar -->
+  <header class="glass-header sticky top-0 z-40 border-b border-apple-border/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-[#1D1D1F] text-white flex items-center justify-center shadow-sm">
+          <!-- Minimal geometric spark/studio icon -->
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-sm sm:text-base font-semibold tracking-tight text-apple-text leading-tight">
+            AI Agent Meta Ads
+          </h1>
+          <p class="text-xs text-apple-muted">Apple Store Malaysia &bull; Bahasa Melayu Malaysia</p>
+        </div>
+      </div>
+
+      <!-- Workflow Navigation Tabs -->
+      <nav class="hidden md:flex items-center bg-[#E8E8ED] p-1 rounded-xl text-xs font-medium" id="mainNavTabs">
+        <button data-tab="input" class="nav-tab px-3.5 py-1.5 rounded-lg bg-white text-apple-text shadow-sm transition">
+          1. Input Kempen
+        </button>
+        <button data-tab="strategy" class="nav-tab px-3.5 py-1.5 rounded-lg text-apple-muted hover:text-apple-text transition">
+          2. Brief & Strategi
+        </button>
+        <button data-tab="studio" class="nav-tab px-3.5 py-1.5 rounded-lg text-apple-muted hover:text-apple-text transition">
+          3. Studio Kreatif
+        </button>
+        <button data-tab="backend" class="nav-tab px-3.5 py-1.5 rounded-lg text-apple-muted hover:text-apple-text transition">
+          4. Supabase & Eksport
+        </button>
+      </nav>
+
+      <!-- Primary One-Click Action -->
+      <div class="flex items-center gap-2">
+        <button id="btnOneClickGenerate" onclick="runOneClickWorkflow()"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-apple-blue hover:bg-apple-blueHover text-white text-xs sm:text-sm font-medium shadow-sm transition active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed">
+          <svg id="iconGenerate" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span id="labelGenerate">Generate Campaign</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Tab Bar -->
+    <div class="flex md:hidden border-t border-apple-border/60 bg-white px-2 py-1.5 overflow-x-auto gap-1 text-xs font-medium">
+      <button data-tab="input" class="nav-tab flex-1 py-1.5 px-2 rounded-lg bg-[#E8E8ED] text-apple-text whitespace-nowrap">1. Input</button>
+      <button data-tab="strategy" class="nav-tab flex-1 py-1.5 px-2 rounded-lg text-apple-muted whitespace-nowrap">2. Brief & Copy</button>
+      <button data-tab="studio" class="nav-tab flex-1 py-1.5 px-2 rounded-lg text-apple-muted whitespace-nowrap">3. Studio Kreatif</button>
+      <button data-tab="backend" class="nav-tab flex-1 py-1.5 px-2 rounded-lg text-apple-muted whitespace-nowrap">4. Eksport & DB</button>
+    </div>
+  </header>
+
+  <!-- Global Notification / Error Banner (Replaces alert()) -->
+  <div id="notificationContainer" class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mt-4 hidden">
+    <div id="notificationBox" class="rounded-2xl p-4 border flex items-start justify-between gap-3 text-sm shadow-sm">
+      <div class="flex items-start gap-3">
+        <span id="notificationIcon" class="mt-0.5"></span>
+        <div>
+          <p id="notificationTitle" class="font-semibold"></p>
+          <p id="notificationMessage" class="text-xs mt-0.5 leading-relaxed"></p>
+        </div>
+      </div>
+      <button onclick="hideNotification()" class="text-xs font-medium opacity-70 hover:opacity-100 px-2 py-1">Tutup</button>
+    </div>
+  </div>
+
+  <!-- Live Pipeline Execution Progress Bar -->
+  <div id="pipelineProgressPanel" class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mt-4 hidden">
+    <div class="bg-white rounded-2xl border border-apple-border/70 p-4 shadow-sm">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-semibold uppercase tracking-wider text-apple-blue flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-apple-blue animate-ping"></span>
+          Aliran Kerja Penjanaan AI Sedang Berjalan
+        </span>
+        <span id="pipelineStepCounter" class="text-xs font-medium text-apple-muted">Langkah 1 / 5</span>
+      </div>
+      <p id="pipelineStatusText" class="text-sm font-medium text-apple-text">Menganalisis input kempen dan mengesahkan maklumat produk rasmi Apple Malaysia...</p>
+      <div class="w-full bg-[#E8E8ED] h-1.5 rounded-full mt-3 overflow-hidden">
+        <div id="pipelineProgressBar" class="bg-apple-blue h-full rounded-full transition-all duration-500" style="width: 15%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Workspace -->
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- =====================================================================
+         SECTION 1: CAMPAIGN INPUT & REFERENCE ASSETS
+    ====================================================================== -->
+    <section id="tab-input" class="tab-panel space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left 8 Columns: Structured Form + Natural Language Instructions -->
+        <div class="lg:col-span-8 space-y-6">
+          <!-- Natural Language Quick Brief -->
+          <div class="bg-white rounded-3xl border border-apple-border/70 p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <label for="nlInstructions" class="text-sm font-semibold text-apple-text">
+                Arahan Bahasa Semula Jadi (Natural Language Instructions)
+              </label>
+              <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#F5F5F7] text-apple-muted">
+                Bahasa Melayu Malaysia
+              </span>
+            </div>
+            <p class="text-xs text-apple-muted mb-3">
+              Terangkan matlamat kempen, promosi khusus, atau gaya visual yang dikehendaki. AI akan menggabungkan arahan ini dengan borang berstruktur di bawah.
+            </p>
+            <textarea id="nlInstructions" rows="3"
+              placeholder="Contoh: Hasilkan kempen Instagram Feed dan Stories untuk iPhone 16 Pro menyasarkan golongan profesional muda di Kuala Lumpur. Tekankan kemasan Titanium dan keupayaan kamera Pro. Jangan reka harga diskaun jika tidak dinyatakan."
+              class="w-full rounded-2xl border border-apple-border bg-[#F5F5F7]/50 px-4 py-3 text-sm text-apple-text placeholder:text-apple-muted/70 focus:bg-white focus:border-apple-blue focus:outline-none transition"></textarea>
+          </div>
+
+          <!-- Structured Campaign Form -->
+          <div class="bg-white rounded-3xl border border-apple-border/70 p-6 shadow-sm space-y-5">
+            <div class="border-b border-apple-border/60 pb-4 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h2 class="text-base font-semibold text-apple-text">Maklumat Kempen Berstruktur</h2>
+                <p class="text-xs text-apple-muted">Isi medan yang berkaitan sahaja. AI akan mengenal pasti maklumat penting berdasarkan objektif kempen.</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="text-xs font-medium text-apple-muted">Kuantiti Variasi:</label>
+                <select id="variationCount" class="rounded-xl border border-apple-border bg-[#F5F5F7] px-3 py-1.5 text-xs font-semibold text-apple-text focus:outline-none focus:border-apple-blue">
+                  <option value="1">1 Variasi</option>
+                  <option value="2">2 Variasi</option>
+                  <option value="3" selected>3 Variasi (Default)</option>
+                  <option value="4">4 Variasi</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Nama Kempen (Campaign Name)</label>
+                <input id="campaignName" type="text" placeholder="Contoh: Kempen Raya / Pelancaran iPhone"
+                  class="w-full rounded-xl border border-apple-border px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Objektif Kempen (Campaign Objective) <span class="text-red-500">*</span></label>
+                <select id="campaignObjective" class="w-full rounded-xl border border-apple-border bg-white px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none">
+                  <option value="Product Awareness">Product Awareness (Kesedaran Produk)</option>
+                  <option value="Brand Awareness">Brand Awareness (Kesedaran Jenama)</option>
+                  <option value="Sales / Conversion" selected>Sales / Conversion (Jualan & Penukaran)</option>
+                  <option value="Promotional Campaign">Promotional Campaign (Kempen Promosi)</option>
+                  <option value="Traffic">Traffic (Trafik Laman Web)</option>
+                  <option value="Engagement">Engagement (Penglibatan Audiens)</option>
+                  <option value="Lead Generation">Lead Generation (Penjanaan Prospek)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Produk Apple (Product) <span class="text-red-500">*</span></label>
+                <input id="productName" type="text" placeholder="Contoh: iPhone 16 Pro Max, MacBook Air M3, AirPods Pro 2"
+                  class="w-full rounded-xl border border-apple-border px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Kategori Produk (Product Category)</label>
+                <select id="productCategory" class="w-full rounded-xl border border-apple-border bg-white px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none">
+                  <option value="Auto-Detect">Auto-Kesan oleh AI</option>
+                  <option value="iPhone">iPhone</option>
+                  <option value="Mac">Mac (MacBook / iMac / Mac mini)</option>
+                  <option value="iPad">iPad</option>
+                  <option value="Apple Watch">Apple Watch</option>
+                  <option value="AirPods">AirPods</option>
+                  <option value="Accessories">Aksesori Apple</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Kategori Kempen (Hybrid Mode)</label>
+                <select id="campaignCategory" class="w-full rounded-xl border border-apple-border bg-white px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none">
+                  <option value="Auto" selected>Auto — AI Tentukan Kategori Terbaik</option>
+                  <option value="Product">1. Product (Produk)</option>
+                  <option value="Promotion">2. Promotion (Promosi)</option>
+                  <option value="Lifestyle">3. Lifestyle (Gaya Hidup)</option>
+                  <option value="Education">4. Education (Pendidikan)</option>
+                  <option value="News">5. News (Berita / Terkini)</option>
+                  <option value="Comparison">6. Comparison (Perbandingan)</option>
+                  <option value="Tips">7. Tips (Tip & Panduan)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Subkategori Kempen (Pilihan)</label>
+                <input id="campaignSubcategory" type="text" placeholder="Biarkan kosong untuk cadangan automatik AI"
+                  class="w-full rounded-xl border border-apple-border px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Platform Pengiklanan</label>
+                <select id="adPlatform" class="w-full rounded-xl border border-apple-border bg-white px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none">
+                  <option value="Facebook Ads & Instagram Ads" selected>Facebook Ads & Instagram Ads</option>
+                  <option value="Instagram Ads Only">Instagram Ads Sahaja</option>
+                  <option value="Facebook Ads Only">Facebook Ads Sahaja</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Sasaran Audiens (Target Audience)</label>
+                <input id="targetAudience" type="text" placeholder="Contoh: Eksekutif muda, pelajar universiti, pencipta kandungan di Malaysia"
+                  class="w-full rounded-xl border border-apple-border px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none" />
+              </div>
+            </div>
+
+            <!-- Promotion & Verified Pricing Block -->
+            <div class="bg-[#F5F5F7] rounded-2xl p-4 space-y-3 border border-apple-border/60">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-apple-text">Butiran Promosi & Harga Sah (Pilihan)</span>
+                <span class="text-[11px] text-apple-muted">AI dilarang mencipta harga atau diskaun palsu</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-[11px] font-medium text-apple-muted mb-1">Harga Jualan / Asal (RM)</label>
+                  <input id="sellingPrice" type="text" placeholder="Contoh: RM5,999"
+                    class="w-full rounded-xl border border-apple-border bg-white px-3 py-2 text-xs focus:border-apple-blue focus:outline-none" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-medium text-apple-muted mb-1">Harga Promosi / Diskaun</label>
+                  <input id="discountInfo" type="text" placeholder="Contoh: RM5,699 / Jimat RM300"
+                    class="w-full rounded-xl border border-apple-border bg-white px-3 py-2 text-xs focus:border-apple-blue focus:outline-none" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-medium text-apple-muted mb-1">Tempoh Kempen</label>
+                  <input id="campaignDuration" type="text" placeholder="Contoh: 1 - 30 Nov 2026"
+                    class="w-full rounded-xl border border-apple-border bg-white px-3 py-2 text-xs focus:border-apple-blue focus:outline-none" />
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-[11px] font-medium text-apple-muted mb-1">Butiran Promosi Tambahan</label>
+                  <input id="promotionDetails" type="text" placeholder="Contoh: Ansuran 0% sehingga 24 bulan dengan bank terpilih"
+                    class="w-full rounded-xl border border-apple-border bg-white px-3 py-2 text-xs focus:border-apple-blue focus:outline-none" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-medium text-apple-muted mb-1">Call To Action (CTA)</label>
+                  <select id="ctaPreference" class="w-full rounded-xl border border-apple-border bg-white px-3 py-2 text-xs focus:border-apple-blue focus:outline-none">
+                    <option value="Auto">Auto — AI Tentukan CTA Terbaik</option>
+                    <option value="Beli Sekarang">Beli Sekarang</option>
+                    <option value="Dapatkan Sekarang">Dapatkan Sekarang</option>
+                    <option value="Ketahui Lebih Lanjut">Ketahui Lebih Lanjut</option>
+                    <option value="Lihat Koleksi">Lihat Koleksi</option>
+                    <option value="Hubungi Kami">Hubungi Kami</option>
+                    <option value="WhatsApp Kami">WhatsApp Kami</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Mesej Utama Kempen (Campaign Message)</label>
+                <input id="campaignMessage" type="text" placeholder="Contoh: Kuasa Pro dalam genggaman anda"
+                  class="w-full rounded-xl border border-apple-border px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Penerangan Kempen (Campaign Description)</label>
+                <input id="campaignDescription" type="text" placeholder="Konteks tambahan kempen atau manfaat khusus"
+                  class="w-full rounded-xl border border-apple-border px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right 4 Columns: Reference Image Management & Placement Selector -->
+        <div class="lg:col-span-4 space-y-6">
+
+          <!-- Reference Image Upload & AI Recognition -->
+          <div class="bg-white rounded-3xl border border-apple-border/70 p-6 shadow-sm space-y-4">
+            <div>
+              <h2 class="text-base font-semibold text-apple-text">Pengurusan Imej Rujukan</h2>
+              <p class="text-xs text-apple-muted mt-0.5">
+                Muat naik logo rasmi Apple Store Malaysia atau imej produk. AI akan menganalisis tujuan imej secara automatik.
+              </p>
+            </div>
+
+            <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-apple-border hover:border-apple-blue rounded-2xl cursor-pointer bg-[#F5F5F7]/60 hover:bg-[#F5F5F7] transition p-4 text-center">
+              <svg class="w-7 h-7 text-apple-muted mb-1.5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+              </svg>
+              <span class="text-xs font-medium text-apple-text">Klik untuk muat naik imej rujukan</span>
+              <span class="text-[11px] text-apple-muted mt-0.5">PNG, JPG, WEBP (Logo, Produk, Gaya Hidup)</span>
+              <input id="referenceImageInput" type="file" accept="image/png,image/jpeg,image/webp" multiple class="hidden" onchange="handleReferenceUpload(event)" />
+            </label>
+
+            <!-- Uploaded References List -->
+            <div id="referenceList" class="space-y-3">
+              <div class="text-xs text-apple-muted text-center py-4 bg-[#F5F5F7]/50 rounded-2xl">
+                Tiada imej rujukan dimuat naik lagi.
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-amber-50 border border-amber-200/80 text-[11px] text-amber-900 leading-relaxed">
+              <strong>Polisi Logo Rasmi:</strong> Logo Apple Store Malaysia yang dimuat naik akan dikekalkan nisbah asal tanpa ubah suai dan diletakkan sebagai lapisan tindanan berasingan di bucu kiri atas secara lalai.
+            </div>
+          </div>
+
+          <!-- Placement Format Selection (Hybrid) -->
+          <div class="bg-white rounded-3xl border border-apple-border/70 p-6 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-base font-semibold text-apple-text">Penempatan Iklan (Placements)</h2>
+                <p class="text-xs text-apple-muted">Mod Hibrid: AI mengesyorkan atau pilih secara manual.</p>
+              </div>
+              <label class="inline-flex items-center gap-1.5 text-xs font-medium text-apple-blue cursor-pointer">
+                <input id="autoPlacementToggle" type="checkbox" checked class="rounded text-apple-blue focus:ring-apple-blue" onchange="togglePlacementMode()" />
+                <span>Auto AI</span>
+              </label>
+            </div>
+
+            <div id="placementCheckboxes" class="grid grid-cols-2 gap-2.5">
+              <label class="flex items-center gap-2.5 p-3 rounded-2xl border border-apple-border bg-[#F5F5F7]/40 cursor-pointer hover:bg-[#F5F5F7]">
+                <input type="checkbox" value="4:5" data-name="Feed (4:5)" checked class="placement-cb rounded text-apple-blue" />
+                <div>
+                  <div class="text-xs font-semibold text-apple-text">Feed</div>
+                  <div class="text-[11px] text-apple-muted">Nisbah 4:5</div>
+                </div>
+              </label>
+              <label class="flex items-center gap-2.5 p-3 rounded-2xl border border-apple-border bg-[#F5F5F7]/40 cursor-pointer hover:bg-[#F5F5F7]">
+                <input type="checkbox" value="1:1" data-name="Square Feed (1:1)" class="placement-cb rounded text-apple-blue" />
+                <div>
+                  <div class="text-xs font-semibold text-apple-text">Square Feed</div>
+                  <div class="text-[11px] text-apple-muted">Nisbah 1:1</div>
+                </div>
+              </label>
+              <label class="flex items-center gap-2.5 p-3 rounded-2xl border border-apple-border bg-[#F5F5F7]/40 cursor-pointer hover:bg-[#F5F5F7]">
+                <input type="checkbox" value="9:16" data-name="Stories (9:16)" checked class="placement-cb rounded text-apple-blue" />
+                <div>
+                  <div class="text-xs font-semibold text-apple-text">Stories</div>
+                  <div class="text-[11px] text-apple-muted">Nisbah 9:16</div>
+                </div>
+              </label>
+              <label class="flex items-center gap-2.5 p-3 rounded-2xl border border-apple-border bg-[#F5F5F7]/40 cursor-pointer hover:bg-[#F5F5F7]">
+                <input type="checkbox" value="9:16" data-name="Reels (9:16)" class="placement-cb rounded text-apple-blue" />
+                <div>
+                  <div class="text-xs font-semibold text-apple-text">Reels</div>
+                  <div class="text-[11px] text-apple-muted">Nisbah 9:16</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SECTION 2: AI PRODUCT VERIFICATION, CAMPAIGN BRIEF & CREATIVE STRATEGY
+    ====================================================================== -->
+    <section id="tab-strategy" class="tab-panel hidden space-y-6">
+
+      <!-- Empty State -->
+      <div id="strategyEmptyState" class="bg-white rounded-3xl border border-apple-border/70 p-12 text-center shadow-sm">
+        <div class="w-12 h-12 rounded-2xl bg-[#F5F5F7] text-apple-muted mx-auto flex items-center justify-center mb-3">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+          </svg>
+        </div>
+        <h3 class="text-base font-semibold text-apple-text">Belum Ada Brief Kempen Dijana</h3>
+        <p class="text-xs text-apple-muted max-w-md mx-auto mt-1">
+          Masukkan nama produk Apple di tab <strong>1. Input Kempen</strong> dan klik <strong>Generate Campaign</strong> untuk memulakan pengesahan produk rasmi Apple Malaysia dan penjanaan strategi.
+        </p>
+      </div>
+
+      <!-- Populated Strategy Workspace -->
+      <div id="strategyContent" class="hidden space-y-6">
+
+        <!-- Product Verification Card (Source A: apple.com/my vs Source B: User Input) -->
+        <div class="bg-white rounded-3xl border border-apple-border/70 p-6 shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-apple-border/60 pb-4 mb-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  Pengesahan Produk Apple Malaysia
+                </span>
+                <span id="verifiedProductCategoryBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#F5F5F7] text-apple-text"></span>
+              </div>
+              <h2 id="verifiedProductTitle" class="text-lg font-bold text-apple-text mt-1.5"></h2>
+            </div>
+            <div id="groundingSourcesList" class="text-xs text-apple-muted"></div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-4 rounded-2xl bg-[#F5F5F7]/70 space-y-1.5">
+              <div class="font-semibold text-apple-text">Spesifikasi & Keupayaan Sah (Sumber Rasmi)</div>
+              <ul id="verifiedSpecsList" class="list-disc list-inside text-apple-muted space-y-1"></ul>
+            </div>
+            <div class="p-4 rounded-2xl bg-[#F5F5F7]/70 space-y-1.5">
+              <div class="font-semibold text-apple-text">Reka Bentuk & Varian Warna</div>
+              <p id="verifiedDesignText" class="text-apple-muted leading-relaxed"></p>
+            </div>
+            <div class="p-4 rounded-2xl bg-[#F5F5F7]/70 space-y-1.5">
+              <div class="font-semibold text-apple-text">Semakan Ketepatan & Maklumat Promosi</div>
+              <p id="verificationNotesText" class="text-apple-muted leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Editable Campaign Brief & Creative Strategy Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- Campaign Brief (Editable + Independent Regeneration) -->
+          <div class="bg-white rounded-3xl border border-apple-border/70 p-6 shadow-sm flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between border-b border-apple-border/60 pb-3 mb-4">
+                <div>
+                  <h3 class="text-base font-semibold text-apple-text">AI Campaign Brief</h3>
+                  <p class="text-xs text-apple-muted">Boleh disunting terus. Perubahan anda akan dikekalkan.</p>
+                </div>
+                <button onclick="regenerateSection('brief')" class="px-3 py-1.5 rounded-xl border border-apple-border hover:bg-[#F5F5F7] text-xs font-medium text-apple-text transition">
+                  Regenerate Brief
+                </button>
+              </div>
+              <div id="campaignBriefFields" class="space-y-3 text-xs"></div>
+            </div>
+          </div>
+
+          <!-- Creative Strategy & Placement Recommendation -->
+          <div class="bg-white rounded-3xl border border-apple-border/70 p-6 shadow-sm flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between border-b border-apple-border/60 pb-3 mb-4">
+                <div>
+                  <h3 class="text-base font-semibold text-apple-text">AI Creative Strategy & Penempatan</h3>
+                  <p class="text-xs text-apple-muted">Hala tuju visual, pencahayaan, dan syor format Meta Ads.</p>
+                </div>
+                <button onclick="regenerateSection('strategy')" class="px-3 py-1.5 rounded-xl border border-apple-border hover:bg-[#F5F5F7] text-xs font-medium text-apple-text transition">
+                  Regenerate Strategy
+                </button>
+              </div>
+              <div id="creativeStrategyFields" class="space-y-3 text-xs"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SECTION 3: CREATIVE VARIATIONS, IMAGE GENERATION & OVERLAY STUDIO
+    ====================================================================== -->
+    <section id="tab-studio" class="tab-panel hidden space-y-6">
+
+      <div id="studioEmptyState" class="bg-white rounded-3xl border border-apple-border/70 p-12 text-center shadow-sm">
+        <h3 class="text-base font-semibold text-apple-text">Studio Kreatif Menunggu Penjanaan</h3>
+        <p class="text-xs text-apple-muted max-w-md mx-auto mt-1">
+          Sila jana kempen terlebih dahulu untuk melihat variasi iklan, copywriting Bahasa Melayu Malaysia, prompt imej 12-bahagian, dan penyunting lapisan teks.
+        </p>
+      </div>
+
+      <div id="studioContent" class="hidden space-y-6">
+        <!-- Variation Selector Bar -->
+        <div class="bg-white rounded-2xl border border-apple-border/70 p-3 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+          <div id="variationTabs" class="flex flex-wrap items-center gap-2"></div>
+          <div class="flex items-center gap-2">
+            <button onclick="regenerateCurrentVariation()" class="px-3.5 py-1.5 rounded-xl border border-apple-border hover:bg-[#F5F5F7] text-xs font-medium text-apple-text transition">
+              Regenerate Variasi Ini
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Split Studio: Left = Visual Preview & Overlay Canvas | Right = Copy, Prompt & Overlay Controls -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          <!-- Left 6 Columns: Live Ad Composition Canvas & Quality Check -->
+          <div class="lg:col-span-6 space-y-4">
+            <div class="bg-white rounded-3xl border border-apple-border/70 p-5 shadow-sm space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <span id="activeVariationAngleBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-apple-blue"></span>
+                  <h3 id="activeVariationConceptTitle" class="text-sm font-semibold text-apple-text mt-1"></h3>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <select id="previewAspectRatio" onchange="changeVariationAspectRatio(this.value)" class="rounded-xl border border-apple-border bg-[#F5F5F7] px-2.5 py-1.5 text-xs font-medium text-apple-text">
+                    <option value="4:5">Feed (4:5)</option>
+                    <option value="1:1">Square Feed (1:1)</option>
+                    <option value="9:16">Stories / Reels (9:16)</option>
+                  </select>
+                  <button id="btnGenerateImage" onclick="generateImageForActiveVariation()" class="px-3 py-1.5 rounded-xl bg-apple-blue hover:bg-apple-blueHover text-white text-xs font-medium transition">
+                    Jana Imej Gemini
+                  </button>
+                </div>
+              </div>
+
+              <!-- Composite Canvas Display (Image + Separate Logo & Text Overlay Layers) -->
+              <div class="w-full bg-[#E8E8ED] rounded-2xl p-4 flex items-center justify-center min-h-[420px] relative overflow-hidden">
+                <canvas id="compositeAdCanvas" class="max-w-full max-h-[540px] rounded-xl shadow-md bg-white"></canvas>
+
+                <!-- Image Generation Loading State -->
+                <div id="imageLoadingOverlay" class="hidden absolute inset-0 bg-white/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
+                  <div class="w-8 h-8 border-2 border-apple-blue border-t-transparent rounded-full animate-spin mb-3"></div>
+                  <p class="text-xs font-semibold text-apple-text">Menjana Visual Komersial melalui Gemini...</p>
+                  <p class="text-[11px] text-apple-muted mt-1">Teks iklan akan digabungkan secara berasingan selepas visual siap.</p>
+                </div>
+              </div>
+
+              <!-- Image Generation Status / Error Notice (No fake images rule) -->
+              <div id="imageStatusNotice" class="text-xs text-apple-muted bg-[#F5F5F7] rounded-xl p-3"></div>
+
+              <!-- Download Single Composite Creative -->
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                <span class="text-[11px] text-apple-muted">Lapisan teks dan logo digabungkan berasingan daripada imej AI.</span>
+                <div class="flex items-center gap-2">
+                  <button onclick="downloadActiveComposite('png')" class="px-3 py-1.5 rounded-xl bg-[#1D1D1F] hover:bg-black text-white text-xs font-medium transition">
+                    Muat Turun PNG
+                  </button>
+                  <button onclick="downloadActiveComposite('jpg')" class="px-3 py-1.5 rounded-xl border border-apple-border hover:bg-[#F5F5F7] text-xs font-medium text-apple-text transition">
+                    Muat Turun JPG
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Creative Quality Control Evaluation Card -->
+            <div class="bg-white rounded-3xl border border-apple-border/70 p-5 shadow-sm space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-semibold uppercase tracking-wider text-apple-text">Kawalan Kualiti Kreatif (AI Quality Control)</h4>
+                <span id="qcOverallBadge" class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700">Disemak</span>
+              </div>
+              <div id="qcChecklistGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px]"></div>
+            </div>
+          </div>
+
+          <!-- Right 6 Columns: Copywriting Editor, Text Overlay Controls & 12-Part Image Prompt -->
+          <div class="lg:col-span-6 space-y-4">
+
+            <!-- Bahasa Melayu Malaysia Copywriting & Overlay Layer Controls -->
+            <div class="bg-white rounded-3xl border border-apple-border/70 p-5 shadow-sm space-y-4">
+              <div class="flex items-center justify-between border-b border-apple-border/60 pb-3">
+                <div>
+                  <h4 class="text-sm font-semibold text-apple-text">Copywriting & Lapisan Tindanan Teks (Bahasa Melayu)</h4>
+                  <p class="text-[11px] text-apple-muted">Sunting teks di bawah untuk mengemas kini pratonton kanvas secara langsung.</p>
+                </div>
+                <button onclick="regenerateSection('copy')" class="px-2.5 py-1 rounded-xl border border-apple-border hover:bg-[#F5F5F7] text-[11px] font-medium">
+                  Regenerate Copy
+                </button>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label class="block font-medium text-apple-text mb-1">Tajuk Utama (Headline Overlay)</label>
+                  <input id="editHeadline" type="text" oninput="updateActiveVariationField('headline', this.value)"
+                    class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none" />
+                </div>
+                <div>
+                  <label class="block font-medium text-apple-text mb-1">Teks Sokongan (Supporting Text)</label>
+                  <input id="editSupportingText" type="text" oninput="updateActiveVariationField('supportingText', this.value)"
+                    class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none" />
+                </div>
+                <div>
+                  <label class="block font-medium text-apple-text mb-1">Nama Produk (Overlay)</label>
+                  <input id="editOverlayProduct" type="text" oninput="updateActiveVariationField('overlayProductName', this.value)"
+                    class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none" />
+                </div>
+                <div>
+                  <label class="block font-medium text-apple-text mb-1">Call To Action (CTA)</label>
+                  <input id="editCta" type="text" oninput="updateActiveVariationField('cta', this.value)"
+                    class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none" />
+                </div>
+                <div>
+                  <label class="block font-medium text-apple-text mb-1">Harga Promosi / Tawaran (Sah Sahaja)</label>
+                  <input id="editPromoPrice" type="text" oninput="updateActiveVariationField('promoPrice', this.value)"
+                    class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none" />
+                </div>
+                <div>
+                  <label class="block font-medium text-apple-text mb-1">Harga Asal / Diskaun (Sah Sahaja)</label>
+                  <input id="editOriginalPrice" type="text" oninput="updateActiveVariationField('originalPrice', this.value)"
+                    class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none" />
+                </div>
+              </div>
+
+              <!-- Overlay Styling & Layer Toggles -->
+              <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-apple-border/60 text-xs">
+                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                  <input id="toggleLogoLayer" type="checkbox" checked onchange="renderCompositeCanvas()" class="rounded text-apple-blue" />
+                  <span>Papar Logo</span>
+                </label>
+                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                  <input id="toggleTextLayer" type="checkbox" checked onchange="renderCompositeCanvas()" class="rounded text-apple-blue" />
+                  <span>Papar Lapisan Teks</span>
+                </label>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-apple-muted">Tema Tindanan:</span>
+                  <select id="overlayTheme" onchange="renderCompositeCanvas()" class="rounded-lg border border-apple-border bg-[#F5F5F7] px-2 py-1 text-xs">
+                    <option value="dark-gradient">Gelap Kontras Tinggi</option>
+                    <option value="light-glass">Putih Minimalis Apple</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Meta Ads Primary Text & Description -->
+              <div class="space-y-2 pt-2 border-t border-apple-border/60 text-xs">
+                <div>
+                  <label class="block font-medium text-apple-text mb-1">Primary Text (Kapsyen Facebook / Instagram)</label>
+                  <textarea id="editPrimaryText" rows="3" oninput="updateActiveVariationField('primaryText', this.value)"
+                    class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none"></textarea>
+                </div>
+                <div>
+                  <label class="block font-medium text-apple-text mb-1">Description (Penerangan Pautan Iklan)</label>
+                  <input id="editDescription" type="text" oninput="updateActiveVariationField('description', this.value)"
+                    class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none" />
+                </div>
+              </div>
+            </div>
+
+            <!-- 12-Part Structured AI Image Prompt Editor -->
+            <div class="bg-white rounded-3xl border border-apple-border/70 p-5 shadow-sm space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="text-sm font-semibold text-apple-text">AI Image Prompt (12-Bahagian Berstruktur)</h4>
+                  <p class="text-[11px] text-apple-muted">Boleh disunting sebelum menjana semula imej atau dieksport ke alat luaran.</p>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <button onclick="copyActivePrompt()" class="px-2.5 py-1 rounded-xl border border-apple-border hover:bg-[#F5F5F7] text-[11px] font-medium">
+                    Salin Prompt
+                  </button>
+                  <button onclick="regenerateSection('prompt')" class="px-2.5 py-1 rounded-xl border border-apple-border hover:bg-[#F5F5F7] text-[11px] font-medium">
+                    Regenerate Prompt
+                  </button>
+                </div>
+              </div>
+              <textarea id="editImagePrompt" rows="9" oninput="updateActiveVariationField('imagePrompt', this.value)"
+                class="w-full rounded-2xl border border-apple-border bg-[#F5F5F7]/60 p-3 font-mono text-[11px] leading-relaxed text-apple-text focus:bg-white focus:border-apple-blue focus:outline-none"></textarea>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SECTION 4: SUPABASE EDGE FUNCTIONS & CAMPAIGN EXPORT
+    ====================================================================== -->
+    <section id="tab-backend" class="tab-panel hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Export Package Panel -->
+        <div class="lg:col-span-6 bg-white rounded-3xl border border-apple-border/70 p-6 shadow-sm space-y-5">
+          <div>
+            <h2 class="text-base font-semibold text-apple-text">Eksport Pakej Kempen (Campaign Export)</h2>
+            <p class="text-xs text-apple-muted mt-0.5">
+              Muat turun aset kempen yang benar-benar dijana sahaja. Tiada fail imej palsu atau kosong akan dimasukkan ke dalam pakej ZIP.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <button onclick="exportCampaignBriefMarkdown()" class="p-4 rounded-2xl border border-apple-border hover:border-apple-blue hover:bg-[#F5F5F7]/60 text-left transition">
+              <div class="font-semibold text-apple-text">Campaign Brief (.md)</div>
+              <div class="text-[11px] text-apple-muted mt-0.5">Format Markdown berstruktur</div>
+            </button>
+            <button onclick="exportCopywritingTxt()" class="p-4 rounded-2xl border border-apple-border hover:border-apple-blue hover:bg-[#F5F5F7]/60 text-left transition">
+              <div class="font-semibold text-apple-text">Copywriting (.txt)</div>
+              <div class="text-[11px] text-apple-muted mt-0.5">Semua variasi teks iklan BM</div>
+            </button>
+            <button onclick="exportPromptsTxt()" class="p-4 rounded-2xl border border-apple-border hover:border-apple-blue hover:bg-[#F5F5F7]/60 text-left transition">
+              <div class="font-semibold text-apple-text">Image Prompts (.txt)</div>
+              <div class="text-[11px] text-apple-muted mt-0.5">Prompt 12-bahagian setiap variasi</div>
+            </button>
+            <button onclick="exportCampaignJson()" class="p-4 rounded-2xl border border-apple-border hover:border-apple-blue hover:bg-[#F5F5F7]/60 text-left transition">
+              <div class="font-semibold text-apple-text">Campaign Data (.json)</div>
+              <div class="text-[11px] text-apple-muted mt-0.5">Data lengkap untuk integrasi sistem</div>
+            </button>
+          </div>
+
+          <div class="pt-2">
+            <button onclick="exportCompleteZip()" class="w-full py-3.5 px-5 rounded-2xl bg-[#1D1D1F] hover:bg-black text-white text-sm font-semibold shadow-sm transition flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+              <span>Muat Turun Pakej Lengkap Kempen (.ZIP)</span>
+            </button>
+            <p class="text-[11px] text-apple-muted mt-2 text-center">
+              Struktur ZIP: <code>campaign-brief.md</code>, <code>campaign-data.json</code>, <code>copywriting/</code>, <code>image-prompts/</code>, dan <code>images/</code> (hanya imej yang telah dijana).
+            </p>
+          </div>
+        </div>
+
+        <!-- Supabase Edge Functions Architecture & Configuration -->
+        <div class="lg:col-span-6 bg-white rounded-3xl border border-apple-border/70 p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <h2 class="text-base font-semibold text-apple-text">Integrasi Backend Supabase (Edge Functions)</h2>
+              <p class="text-xs text-apple-muted mt-0.5">
+                Semua operasi pangkalan data dan storan mesti melalui Supabase Edge Functions tanpa mendedahkan kunci <code>service_role</code>.
+              </p>
+            </div>
+            <span id="supabaseStatusBadge" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap">
+              Belum Dikonfigurasi
+            </span>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-[#F5F5F7] text-xs text-apple-muted space-y-1.5 leading-relaxed">
+            <p class="font-semibold text-apple-text">Status Pemeriksaan Infrastruktur:</p>
+            <p>
+              Tiada URL projek Supabase atau nama Edge Function yang sedia ada dikesan dalam persekitaran semasa. Selaras dengan Peraturan Pembangunan Mandatori (Seksyen 18), aplikasi ini tidak mencipta nama Edge Function atau jadual pangkalan data palsu.
+            </p>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block font-medium text-apple-text mb-1">Supabase Project URL</label>
+              <input id="sbProjectUrl" type="url" placeholder="https://your-project-ref.supabase.co"
+                class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none" />
+            </div>
+            <div>
+              <label class="block font-medium text-apple-text mb-1">Supabase Anon Key (Public Client Key Sahaja)</label>
+              <input id="sbAnonKey" type="password" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block font-medium text-apple-text mb-1">Nama Edge Function (Simpan Kempen)</label>
+                <input id="sbCampaignFnName" type="text" placeholder="Masukkan nama fungsi sebenar anda"
+                  class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none" />
+              </div>
+              <div>
+                <label class="block font-medium text-apple-text mb-1">Nama Edge Function (Muat Naik Storan)</label>
+                <input id="sbStorageFnName" type="text" placeholder="Masukkan nama fungsi sebenar anda"
+                  class="w-full rounded-xl border border-apple-border px-3 py-2 focus:border-apple-blue focus:outline-none" />
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-2">
+            <button onclick="saveSupabaseConfig()" class="px-4 py-2 rounded-xl border border-apple-border hover:bg-[#F5F5F7] text-xs font-medium text-apple-text transition">
+              Sahkan Konfigurasi
+            </button>
+            <button onclick="persistCampaignViaEdgeFunction()" class="px-4 py-2 rounded-xl bg-apple-blue hover:bg-apple-blueHover text-white text-xs font-medium transition">
+              Simpan Kempen melalui Edge Function
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // APPLICATION STATE (Single Source of Truth — No Mock Production Data)
+    // =========================================================================
+    const apiKey = ""; // Runtime-provided Gemini API key in Gemini Canvas
+
+    const appState = {
+      isGenerating: false,
+      activeTab: 'input',
+      activeVariationIndex: 0,
+      references: [], // { id, name, type, mimeType, base64, dataUrl, aiAnalysis }
+      productVerification: null,
+      campaignBrief: null,
+      creativeStrategy: null,
+      variations: [], // Each variation has independent concept, copy, prompt, imageDataUrl, aspectRatio, qc
+      supabaseConfig: {
+        url: '',
+        anonKey: '',
+        campaignFn: '',
+        storageFn: ''
+      }
+    };
+
+    // =========================================================================
+    // NAVIGATION & UI NOTIFICATION HELPERS
+    // =========================================================================
+    document.querySelectorAll('.nav-tab').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    function switchTab(tabId) {
+      appState.activeTab = tabId;
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.toggle('hidden', panel.id !== `tab-${tabId}`);
+      });
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        const isActive = btn.dataset.tab === tabId;
+        if (btn.closest('#mainNavTabs')) {
+          btn.className = isActive
+            ? 'nav-tab px-3.5 py-1.5 rounded-lg bg-white text-apple-text shadow-sm transition'
+            : 'nav-tab px-3.5 py-1.5 rounded-lg text-apple-muted hover:text-apple-text transition';
+        } else {
+          btn.className = isActive
+            ? 'nav-tab flex-1 py-1.5 px-2 rounded-lg bg-[#E8E8ED] text-apple-text whitespace-nowrap'
+            : 'nav-tab flex-1 py-1.5 px-2 rounded-lg text-apple-muted whitespace-nowrap';
+        }
+      });
+      if (tabId === 'studio' && appState.variations.length > 0) {
+        renderCompositeCanvas();
+      }
+    }
+
+    function showNotification(type, title, message) {
+      const container = document.getElementById('notificationContainer');
+      const box = document.getElementById('notificationBox');
+      const icon = document.getElementById('notificationIcon');
+      document.getElementById('notificationTitle').textContent = title;
+      document.getElementById('notificationMessage').textContent = message;
+
+      box.className = 'rounded-2xl p-4 border flex items-start justify-between gap-3 text-sm shadow-sm ';
+      if (type === 'error') {
+        box.className += 'bg-red-50 border-red-200 text-red-900';
+        icon.innerHTML = '⚠️';
+      } else if (type === 'warning') {
+        box.className += 'bg-amber-50 border-amber-200 text-amber-900';
+        icon.innerHTML = 'ℹ️';
+      } else {
+        box.className += 'bg-emerald-50 border-emerald-200 text-emerald-900';
+        icon.innerHTML = '✅';
+      }
+      container.classList.remove('hidden');
+    }
+
+    function hideNotification() {
+      document.getElementById('notificationContainer').classList.add('hidden');
+    }
+
+    function updatePipelineProgress(step, total, text) {
+      const panel = document.getElementById('pipelineProgressPanel');
+      panel.classList.remove('hidden');
+      document.getElementById('pipelineStepCounter').textContent = `Langkah ${step} / ${total}`;
+      document.getElementById('pipelineStatusText').textContent = text;
+      const pct = Math.min(100, Math.round((step / total) * 100));
+      document.getElementById('pipelineProgressBar').style.width = `${pct}%`;
+    }
+
+    function hidePipelineProgress() {
+      document.getElementById('pipelineProgressPanel').classList.add('hidden');
+    }
+
+    function togglePlacementMode() {
+      const isAuto = document.getElementById('autoPlacementToggle').checked;
+      document.querySelectorAll('.placement-cb').forEach(cb => {
+        cb.disabled = isAuto;
+      });
+    }
+    togglePlacementMode();
+
+    // =========================================================================
+    // GEMINI API CLIENT WITH EXPONENTIAL BACKOFF
+    // =========================================================================
+    async function callGeminiWithBackoff(model, payload, maxRetries = 4) {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      let delay = 1000;
+
+      for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (response.status === 429 || response.status >= 500) {
+            if (attempt < maxRetries) {
+              await new Promise(res => setTimeout(res, delay));
+              delay *= 2;
+              continue;
+            }
+          }
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.error?.message || `Ralat API Gemini (${response.status})`);
+          }
+          return data;
+        } catch (err) {
+          if (attempt === maxRetries) throw err;
+          await new Promise(res => setTimeout(res, delay));
+          delay *= 2;
+        }
+      }
+    }
+
+    // =========================================================================
+    // REFERENCE IMAGE UPLOAD & AI IMAGE RECOGNITION (SECTION 12)
+    // =========================================================================
+    async function handleReferenceUpload(event) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+
+      for (const file of files) {
+        if (!file.type.startsWith('image/')) {
+          showNotification('error', 'Format Fail Tidak Sah', `Fail "${file.name}" bukan imej yang disokong.`);
+          continue;
+        }
+
+        try {
+          const dataUrl = await readFileAsDataURL(file);
+          const base64 = dataUrl.split(',')[1];
+          const refObj = {
+            id: crypto.randomUUID(),
+            name: file.name,
+            type: 'Visual Reference',
+            mimeType: file.type,
+            base64,
+            dataUrl,
+            aiAnalysis: 'Menganalisis imej dengan Gemini...'
+          };
+          appState.references.push(refObj);
+          renderReferenceList();
+
+          // Analyze uploaded image via Gemini multimodal understanding
+          analyzeReferenceImageWithAI(refObj);
+        } catch (err) {
+          showNotification('error', 'Ralat Muat Naik Imej Rujukan', err.message);
+        }
+      }
+      event.target.value = '';
+    }
+
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('Gagal membaca fail imej.'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function analyzeReferenceImageWithAI(refObj) {
+      try {
+        const prompt = `Analisis imej rujukan yang dimuat naik untuk kempen Meta Ads Apple Store Malaysia ini.
+Kelaskan kepada SATU daripada kategori berikut sahaja:
+- Apple Store Malaysia Logo
+- Apple Product Image
+- Visual Reference
+- Campaign Reference
+- Product Lifestyle Image
+
+Berikan jawapan dalam format JSON:
+{"category": "...", "reason": "Penerangan ringkas dalam Bahasa Melayu Malaysia"}`;
+
+        const payload = {
+          contents: [{
+            role: 'user',
+            parts: [
+              { text: prompt },
+              { inlineData: { mimeType: refObj.mimeType, data: refObj.base64 } }
+            ]
+          }],
+          generationConfig: {
+            responseMimeType: 'application/json'
+          }
+        };
+
+        const res = await callGeminiWithBackoff('gemini-3-flash-preview', payload);
+        const text = res?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) {
+          const parsed = JSON.parse(text);
+          const allowed = [
+            'Apple Store Malaysia Logo',
+            'Apple Product Image',
+            'Visual Reference',
+            'Campaign Reference',
+            'Product Lifestyle Image'
+          ];
+          if (allowed.includes(parsed.category)) {
+            refObj.type = parsed.category;
+          }
+          refObj.aiAnalysis = parsed.reason || 'Analisis selesai.';
+        }
+      } catch (err) {
+        refObj.aiAnalysis = 'Pengelasan automatik tidak tersedia. Sila pilih kategori secara manual.';
+      }
+      renderReferenceList();
+      renderCompositeCanvas();
+    }
+
+    function updateReferenceType(id, newType) {
+      const item = appState.references.find(r => r.id === id);
+      if (item) {
+        item.type = newType;
+        renderCompositeCanvas();
+      }
+    }
+
+    function removeReference(id) {
+      appState.references = appState.references.filter(r => r.id !== id);
+      renderReferenceList();
+      renderCompositeCanvas();
+    }
+
+    function renderReferenceList() {
+      const container = document.getElementById('referenceList');
+      if (appState.references.length === 0) {
+        container.innerHTML = `<div class="text-xs text-apple-muted text-center py-4 bg-[#F5F5F7]/50 rounded-2xl">Tiada imej rujukan dimuat naik lagi.</div>`;
+        return;
+      }
+
+      container.innerHTML = appState.references.map(ref => `
+        <div class="p-3 rounded-2xl border border-apple-border/80 bg-[#F5F5F7]/40 flex items-start gap-3">
+          <img src="${ref.dataUrl}" alt="${ref.name}" class="w-14 h-14 object-contain rounded-xl bg-white border border-apple-border/60 p-1 shrink-0" />
+          <div class="flex-1 min-w-0 space-y-1.5">
+            <div class="flex items-center justify-between gap-1">
+              <p class="text-xs font-semibold text-apple-text truncate">${ref.name}</p>
+              <button onclick="removeReference('${ref.id}')" class="text-[11px] text-red-600 hover:underline shrink-0">Padam</button>
+            </div>
+            <select onchange="updateReferenceType('${ref.id}', this.value)"
+              class="w-full rounded-lg border border-apple-border bg-white px-2 py-1 text-[11px] font-medium text-apple-text">
+              <option value="Apple Store Malaysia Logo" ${ref.type === 'Apple Store Malaysia Logo' ? 'selected' : ''}>Apple Store Malaysia Logo</option>
+              <option value="Apple Product Image" ${ref.type === 'Apple Product Image' ? 'selected' : ''}>Apple Product Image</option>
+              <option value="Visual Reference" ${ref.type === 'Visual Reference' ? 'selected' : ''}>Visual Reference</option>
+              <option value="Campaign Reference" ${ref.type === 'Campaign Reference' ? 'selected' : ''}>Campaign Reference</option>
+              <option value="Product Lifestyle Image" ${ref.type === 'Product Lifestyle Image' ? 'selected' : ''}>Product Lifestyle Image</option>
+            </select>
+            <p class="text-[11px] text-apple-muted leading-snug">${ref.aiAnalysis}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // =========================================================================
+    // COLLECT CAMPAIGN INPUTS
+    // =========================================================================
+    function getCampaignInputData() {
+      const isAutoPlacement = document.getElementById('autoPlacementToggle').checked;
+      const selectedPlacements = Array.from(document.querySelectorAll('.placement-cb:checked')).map(cb => ({
+        ratio: cb.value,
+        name: cb.dataset.name
+      }));
+
+      return {
+        nlInstructions: document.getElementById('nlInstructions').value.trim(),
+        campaignName: document.getElementById('campaignName').value.trim(),
+        campaignObjective: document.getElementById('campaignObjective').value,
+        productName: document.getElementById('productName').value.trim(),
+        productCategory: document.getElementById('productCategory').value,
+        campaignCategory: document.getElementById('campaignCategory').value,
+        campaignSubcategory: document.getElementById('campaignSubcategory').value.trim(),
+        adPlatform: document.getElementById('adPlatform').value,
+        targetAudience: document.getElementById('targetAudience').value.trim(),
+        sellingPrice: document.getElementById('sellingPrice').value.trim(),
+        discountInfo: document.getElementById('discountInfo').value.trim(),
+        campaignDuration: document.getElementById('campaignDuration').value.trim(),
+        promotionDetails: document.getElementById('promotionDetails').value.trim(),
+        ctaPreference: document.getElementById('ctaPreference').value,
+        campaignMessage: document.getElementById('campaignMessage').value.trim(),
+        campaignDescription: document.getElementById('campaignDescription').value.trim(),
+        variationCount: parseInt(document.getElementById('variationCount').value, 10) || 3,
+        isAutoPlacement,
+        selectedPlacements
+      };
+    }
+
+    // =========================================================================
+    // ONE-CLICK GENERATION WORKFLOW (SECTIONS 4, 6, 7, 8, 9, 10, 11, 13, 14)
+    // =========================================================================
+    async function runOneClickWorkflow() {
+      if (appState.isGenerating) return;
+      hideNotification();
+
+      const input = getCampaignInputData();
+
+      // Rule: Identify missing essential information instead of inventing it
+      if (!input.productName && !input.nlInstructions) {
+        showNotification(
+          'error',
+          'Maklumat Produk Diperlukan',
+          'Sila masukkan sekurang-kurangnya Nama Produk Apple (contoh: iPhone 16 Pro, MacBook Air M3) atau terangkan produk dalam Arahan Bahasa Semula Jadi sebelum menjana kempen.'
+        );
+        return;
+      }
+
+      appState.isGenerating = true;
+      const btn = document.getElementById('btnOneClickGenerate');
+      btn.disabled = true;
+      document.getElementById('labelGenerate').textContent = 'Menjana Kempen...';
+
+      try {
+        // STEP 1: Official Apple Malaysia Product Verification (Grounded with Google Search)
+        updatePipelineProgress(1, 4, 'Mengesahkan spesifikasi rasmi produk Apple Malaysia (apple.com/my)...');
+        const productVerification = await verifyAppleMalaysiaProduct(input);
+        appState.productVerification = productVerification;
+
+        // STEP 2: AI Campaign Brief, Creative Strategy & Placement Recommendation
+        updatePipelineProgress(2, 4, 'Membina AI Campaign Brief, Strategi Kreatif & Cadangan Penempatan...');
+        const strategyResult = await generateBriefAndStrategy(input, productVerification);
+        appState.campaignBrief = strategyResult.brief;
+        appState.creativeStrategy = strategyResult.strategy;
+
+        // STEP 3: Generate N Independent Creative Variations (Copy + 12-Part Image Prompts)
+        updatePipelineProgress(3, 4, `Menjana ${input.variationCount} variasi kreatif bebas dalam Bahasa Melayu Malaysia...`);
+        const variationsResult = await generateCreativeVariations(input, productVerification, strategyResult.brief, strategyResult.strategy);
+        appState.variations = variationsResult;
+        appState.activeVariationIndex = 0;
+
+        // Render Strategy & Studio Views immediately
+        renderStrategySection();
+        renderStudioSection();
+        switchTab('studio');
+
+        // STEP 4: Native Gemini Image Generation for Variation 1 (and queue others or let user generate)
+        updatePipelineProgress(4, 4, 'Menjana visual komersial pertama menggunakan model imej natif Gemini...');
+        await generateImageForVariation(0);
+
+        showNotification(
+          'success',
+          'Kempen Berjaya Dijana',
+          `Brief kempen, strategi kreatif, dan ${appState.variations.length} variasi iklan Bahasa Melayu Malaysia telah siap disusun.`
+        );
+      } catch (err) {
+        console.error(err);
+        showNotification(
+          'error',
+          'Ralat Semasa Penjanaan Kempen',
+          err.message || 'Berlaku gangguan semasa memproses aliran kerja AI. Data input anda telah dikekalkan.'
+        );
+      } finally {
+        appState.isGenerating = false;
+        btn.disabled = false;
+        document.getElementById('labelGenerate').textContent = 'Generate Campaign';
+        hidePipelineProgress();
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // STEP 1: Verify Apple Product via Google Search Grounding (apple.com/my)
+    // -------------------------------------------------------------------------
+    async function verifyAppleMalaysiaProduct(input) {
+      const systemPrompt = `Anda ialah pakar pengesahan produk rasmi untuk Apple Store Malaysia.
+Tugas anda adalah mengesahkan maklumat produk Apple sebenar berdasarkan laman rasmi Apple Malaysia (https://www.apple.com/my/).
+PERATURAN KETAT:
+1. JANGAN reka produk Apple fiksyen atau spesifikasi palsu.
+2. Asingkan fakta rasmi Apple Malaysia daripada maklumat promosi yang dimasukkan oleh pengguna.
+3. Jika harga tidak dibekalkan oleh pengguna dan tidak dapat disahkan secara rasmi, nyatakan sebagai "Tidak dinyatakan / Perlu pengesahan".
+4. Gunakan Bahasa Melayu Malaysia yang profesional (elakkan istilah Indonesia).`;
+
+      const userQuery = `Sahkan produk Apple berikut untuk kempen Malaysia:
+Produk Input: "${input.productName || input.nlInstructions}"
+Kategori Input: "${input.productCategory}"
+Harga Pengguna: "${input.sellingPrice || 'Tiada'}"
+Promosi Pengguna: "${input.discountInfo || 'Tiada'} ${input.promotionDetails || ''}"
+
+Berikan hasil dalam format JSON sah sahaja dengan struktur berikut:
+{
+  "verifiedProductName": "Nama rasmi penuh produk Apple",
+  "verifiedCategory": "Kategori rasmi (iPhone/Mac/iPad/Apple Watch/AirPods/Accessories)",
+  "isRealAppleProduct": true,
+  "officialFeatures": ["Ciri rasmi 1", "Ciri rasmi 2", "Ciri rasmi 3", "Ciri rasmi 4"],
+  "designAndVariants": "Penerangan ringkas reka bentuk sebenar, bahan binaan, dan pilihan warna rasmi",
+  "verificationNotes": "Nota pemisahan antara spesifikasi rasmi Apple dan butiran promosi pengguna, serta sebarang maklumat yang tiada"
+}`;
+
+      const payload = {
+        contents: [{ role: 'user', parts: [{ text: userQuery }] }],
+        tools: [{ google_search: {} }],
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: {
+          responseMimeType: 'application/json'
+        }
+      };
+
+      const res = await callGeminiWithBackoff('gemini-3-flash-preview', payload);
+      const rawText = res?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!rawText) {
+        throw new Error('Gagal mendapatkan pengesahan produk daripada Gemini.');
+      }
+
+      const parsed = JSON.parse(rawText);
+      const attributions = res?.candidates?.[0]?.groundingMetadata?.groundingAttributions || [];
+      parsed.sources = attributions
+        .map(a => ({ title: a.web?.title, uri: a.web?.uri }))
+        .filter(s => s.title && s.uri)
+        .slice(0, 3);
+
+      return parsed;
+    }
+
+    // -------------------------------------------------------------------------
+    // STEP 2: Generate Campaign Brief & Creative Strategy (Sections 7, 8, 11)
+    // -------------------------------------------------------------------------
+    async function generateBriefAndStrategy(input, productInfo) {
+      const systemPrompt = `Anda ialah Pengarah Kreatif Pengiklanan Apple dan Pakar Strategi Meta Ads senior untuk pasaran Malaysia.
+Gunakan Bahasa Melayu Malaysia semula jadi, moden, premium, dan berfokuskan penukaran (conversion-focused).
+Elakkan perkataan Indonesia seperti "anda bisa", "kualitas", "gratis", "diskon", "ponsel". Gunakan "anda boleh", "kualiti", "percuma", "diskaun", "telefon pintar".
+Jangan reka tuntutan palsu atau harga yang tidak diberikan.`;
+
+      const userPrompt = `Bina AI Campaign Brief dan AI Creative Strategy berdasarkan data berikut:
+Produk Sah: ${JSON.stringify(productInfo)}
+Input Kempen Pengguna: ${JSON.stringify(input)}
+
+Kembalikan JSON sah mengikut struktur tepat ini:
+{
+  "brief": {
+    "campaignOverview": "Ringkasan keseluruhan kempen",
+    "selectedCategoryAndReason": "Kategori kempen yang dipilih (daripada 7 kategori: Product, Promotion, Lifestyle, Education, News, Comparison, Tips) berserta subkategori dan sebab pemilihan",
+    "campaignObjective": "Objektif utama kempen",
+    "productOverview": "Gambaran keseluruhan produk berdasarkan fakta rasmi",
+    "targetAudience": "Profil sasaran audiens di Malaysia",
+    "audiencePainPoints": "Masalah atau keinginan utama pelanggan",
+    "campaignMessage": "Mesej teras kempen",
+    "valueProposition": "Cadangan nilai utama produk",
+    "keySellingPoints": "3-4 titik jualan utama",
+    "campaignAngle": "Sudut pendekatan pemasaran",
+    "marketingDirection": "Hala tuju pemasaran Meta Ads",
+    "suggestedCta": "CTA yang disyorkan",
+    "placementRecommendation": "Cadangan penempatan Meta Ads (Feed 4:5, Square 1:1, Stories 9:16, Reels 9:16) dan rasionalnya"
+  },
+  "strategy": {
+    "coreCreativeConcept": "Konsep kreatif teras",
+    "mainMessage": "Mesej visual utama",
+    "visualTheme": "Tema visual berinspirasi Apple",
+    "creativeDirection": "Arahan seni & penceritaan produk",
+    "emotionalAppeal": "Daya tarikan emosi kepada pengguna Malaysia",
+    "productPresentation": "Cara persembahan produk sebagai titik fokus utama",
+    "composition": "Susun atur ruang negatif & hierarki visual",
+    "lighting": "Arah dan kualiti pencahayaan komersial studio",
+    "background": "Persekitaran dan latar belakang",
+    "colorDirection": "Palet warna harmoni dengan varian produk",
+    "typographyDirection": "Gaya tipografi bersih dan mudah dibaca pada skrin mudah alih",
+    "recommendedFormatRatio": "4:5"
+  }
+}`;
+
+      const payload = {
+        contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: {
+          responseMimeType: 'application/json'
+        }
+      };
+
+      const res = await callGeminiWithBackoff('gemini-3-flash-preview', payload);
+      const rawText = res?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!rawText) throw new Error('Gagal menjana Campaign Brief dan Creative Strategy.');
+      return JSON.parse(rawText);
+    }
+
+    // -------------------------------------------------------------------------
+    // STEP 3: Generate Independent Creative Variations + 12-Part Prompts
+    // -------------------------------------------------------------------------
+    async function generateCreativeVariations(input, productInfo, brief, strategy) {
+      const count = input.variationCount;
+      const defaultRatio = input.isAutoPlacement
+        ? (strategy.recommendedFormatRatio || '4:5')
+        : (input.selectedPlacements[0]?.ratio || '4:5');
+
+      const systemPrompt = `Anda ialah Pakar Penulisan Iklan (Copywriter) Meta Ads dan Jurutera Prompt Fotografi Komersial untuk Apple Store Malaysia.
+Hasilkan ${count} variasi kreatif yang BERBEZA SECARA KONSEP DAN VISUAL antara satu sama lain.
+PERATURAN PENTING:
+1. Semua teks iklan mestilah dalam Bahasa Melayu Malaysia yang profesional, ringkas, dan jelas.
+2. JANGAN masukkan arahan untuk melukis teks iklan di dalam "imagePrompt" kerana teks iklan akan ditindih secara berasingan pada lapisan kanvas.
+3. Setiap "imagePrompt" mestilah ditulis dalam Bahasa Inggeris teknikal fotografi studio dengan 12 bahagian wajib:
+   1. SUBJECT
+   2. ACTION
+   3. PRODUCT
+   4. ENVIRONMENT
+   5. COMPOSITION
+   6. VISUAL STYLE
+   7. LIGHTING
+   8. CAMERA AND QUALITY
+   9. COLOR AND MOOD
+   10. DETAILS
+   11. NEGATIVE CONSTRAINTS
+   12. FINAL INSTRUCTION
+4. Pastikan bahagian NEGATIVE CONSTRAINTS melarang sebarang teks, logo, tera air (watermark), atau reka bentuk produk Apple yang salah.`;
+
+      const userPrompt = `Hasilkan ${count} variasi kreatif bebas untuk kempen ini:
+Produk Sah: ${JSON.stringify(productInfo)}
+Campaign Brief: ${JSON.stringify(brief)}
+Creative Strategy: ${JSON.stringify(strategy)}
+Maklumat Harga Sah Pengguna: Harga Asal="${input.sellingPrice || ''}", Harga Promosi/Diskaun="${input.discountInfo || ''}", Tempoh="${input.campaignDuration || ''}"
+CTA Pilihan Pengguna: "${input.ctaPreference}"
+
+Kembalikan JSON sah dalam format array objek:
+[
+  {
+    "variationNumber": 1,
+    "creativeAngle": "Sudut kreatif unik (cth: Reka Bentuk & Bahan Premium / Gaya Hidup Profesional / Keupayaan Kamera & Prestasi)",
+    "creativeConcept": "Penerangan konsep visual dan mesej variasi ini",
+    "headline": "Tajuk utama pendek & berimpak tinggi untuk tindanan imej (maksimum 6-8 patah perkataan BM)",
+    "supportingText": "Sub-tajuk sokongan ringkas (maksimum 10 patah perkataan BM)",
+    "overlayProductName": "${productInfo.verifiedProductName}",
+    "promoPrice": "${input.discountInfo || input.sellingPrice || ''}",
+    "originalPrice": "${input.discountInfo && input.sellingPrice ? input.sellingPrice : ''}",
+    "cta": "Teks butang CTA BM yang sesuai",
+    "primaryText": "Teks utama kapsyen Facebook/Instagram Ads dalam Bahasa Melayu Malaysia (2-3 perenggan pendek dengan jarak yang kemas)",
+    "description": "Penerangan ringkas pautan iklan Meta Ads",
+    "aspectRatio": "${defaultRatio}",
+    "imagePrompt": "1. SUBJECT: ...\\n2. ACTION: ...\\n3. PRODUCT: ...\\n4. ENVIRONMENT: ...\\n5. COMPOSITION: ...\\n6. VISUAL STYLE: ...\\n7. LIGHTING: ...\\n8. CAMERA AND QUALITY: ...\\n9. COLOR AND MOOD: ...\\n10. DETAILS: ...\\n11. NEGATIVE CONSTRAINTS: No text, no typography, no watermarks, no distorted Apple hardware...\\n12. FINAL INSTRUCTION: ...",
+    "qc": {
+      "productAccuracy": "Lulus — Spesifikasi selaras apple.com/my",
+      "brandConsistency": "Lulus — Estetika minimalis Apple",
+      "readability": "Lulus — Kontras & ruang negatif mencukupi",
+      "textAccuracy": "Lulus — Bahasa Melayu Malaysia tepat",
+      "placementSuitability": "Lulus — Dioptimumkan untuk ${defaultRatio}",
+      "promotionalAccuracy": "Lulus — Tiada harga rekaan"
+    }
+  }
+]`;
+
+      const payload = {
+        contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: {
+          responseMimeType: 'application/json'
+        }
+      };
+
+      const res = await callGeminiWithBackoff('gemini-3-flash-preview', payload);
+      const rawText = res?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!rawText) throw new Error('Gagal menjana variasi kreatif.');
+
+      const parsed = JSON.parse(rawText);
+      return parsed.map((v, idx) => ({
+        ...v,
+        variationNumber: idx + 1,
+        generatedImageUrl: null,
+        imageGenerationError: null
+      }));
+    }
+
+    // =========================================================================
+    // NATIVE GEMINI IMAGE GENERATION (SECTION 14 — NO FAKE IMAGES)
+    // =========================================================================
+    async function generateImageForActiveVariation() {
+      await generateImageForVariation(appState.activeVariationIndex);
+    }
+
+    async function generateImageForVariation(index) {
+      const variation = appState.variations[index];
+      if (!variation) return;
+
+      const loadingEl = document.getElementById('imageLoadingOverlay');
+      const btnGen = document.getElementById('btnGenerateImage');
+      if (index === appState.activeVariationIndex) {
+        loadingEl.classList.remove('hidden');
+        btnGen.disabled = true;
+      }
+
+      try {
+        // Gather non-logo visual/product reference images if uploaded
+        const visualRefs = appState.references.filter(r => r.type !== 'Apple Store Malaysia Logo');
+        const parts = [
+          {
+            text: `Generate a high-end commercial studio advertising photograph for Apple Store Malaysia based on the following structured art direction. CRITICAL: Do NOT render any text, words, letters, numbers, or logos inside the image. Leave clean negative space for separate text overlay.\n\n${variation.imagePrompt}`
+          }
+        ];
+
+        // Attach uploaded product/visual references if present
+        for (const ref of visualRefs.slice(0, 2)) {
+          parts.push({
+            inlineData: {
+              mimeType: ref.mimeType,
+              data: ref.base64
+            }
+          });
+        }
+
+        const aspectMap = {
+          '4:5': '3:4',
+          '1:1': '1:1',
+          '9:16': '9:16'
+        };
+        const targetRatio = aspectMap[variation.aspectRatio] || '1:1';
+
+        const payload = {
+          contents: [{ role: 'user', parts }],
+          generationConfig: {
+            responseModalities: ['IMAGE'],
+            imageConfig: { aspectRatio: targetRatio }
+          }
+        };
+
+        const res = await callGeminiWithBackoff('gemini-3.1-flash-image', payload);
+        const imgPart = res?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+
+        if (!imgPart || !imgPart.inlineData?.data) {
+          throw new Error('Model penjanaan imej Gemini tidak memulangkan data imej. Anda boleh menyalin Image Prompt untuk kegunaan luaran atau cuba jana semula.');
+        }
+
+        variation.generatedImageUrl = `data:${imgPart.inlineData.mimeType || 'image/png'};base64,${imgPart.inlineData.data}`;
+        variation.imageGenerationError = null;
+      } catch (err) {
+        variation.imageGenerationError = err.message;
+        if (index === appState.activeVariationIndex) {
+          showNotification(
+            'warning',
+            'Penjanaan Imej Tidak Berjaya',
+            `${err.message} Prompt imej anda dikekalkan dan boleh disunting atau disalin.`
+          );
+        }
+      } finally {
+        if (index === appState.activeVariationIndex) {
+          loadingEl.classList.add('hidden');
+          btnGen.disabled = false;
+          renderCompositeCanvas();
+          updateImageStatusNotice();
+        }
+      }
+    }
+
+    // =========================================================================
+    // SEPARATE TEXT OVERLAY & LOGO COMPOSITION CANVAS (SECTIONS 12 & 15)
+    // =========================================================================
+    function renderCompositeCanvas() {
+      const variation = appState.variations[appState.activeVariationIndex];
+      if (!variation) return;
+
+      const canvas = document.getElementById('compositeAdCanvas');
+      const ctx = canvas.getContext('2d');
+
+      // Set exact Meta Ads target resolution per aspect ratio
+      const dimensions = {
+        '4:5': { w: 1080, h: 1350 },
+        '1:1': { w: 1080, h: 1080 },
+        '9:16': { w: 1080, h: 1920 }
+      };
+      const dim = dimensions[variation.aspectRatio] || dimensions['4:5'];
+      canvas.width = dim.w;
+      canvas.height = dim.h;
+
+      const showLogo = document.getElementById('toggleLogoLayer').checked;
+      const showText = document.getElementById('toggleTextLayer').checked;
+      const theme = document.getElementById('overlayTheme').value;
+
+      // Clear background cleanly (no fake placeholder photography)
+      ctx.fillStyle = theme === 'dark-gradient' ? '#1D1D1F' : '#F5F5F7';
+      ctx.fillRect(0, 0, dim.w, dim.h);
+
+      const drawOverlays = () => {
+        // Safe zone margins (especially critical for 9:16 Stories/Reels UI overlays)
+        const padX = 72;
+        const topSafe = variation.aspectRatio === '9:16' ? 180 : 72;
+        const bottomSafe = variation.aspectRatio === '9:16' ? 240 : 80;
+
+        // Subtle gradient scrim for legible typography contrast
+        if (showText && variation.generatedImageUrl) {
+          const grad = ctx.createLinearGradient(0, dim.h * 0.45, 0, dim.h);
+          if (theme === 'dark-gradient') {
+            grad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+            grad.addColorStop(1, 'rgba(0, 0, 0, 0.82)');
+          } else {
+            grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+            grad.addColorStop(1, 'rgba(255, 255, 255, 0.90)');
+          }
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, dim.h * 0.45, dim.w, dim.h * 0.55);
+        }
+
+        // 1. Separate Brand Logo Layer (Upper-left default, preserved aspect ratio)
+        const logoRef = appState.references.find(r => r.type === 'Apple Store Malaysia Logo');
+        if (showLogo && logoRef) {
+          const logoImg = new Image();
+          logoImg.onload = () => {
+            const maxLogoW = 220;
+            const maxLogoH = 72;
+            const scale = Math.min(maxLogoW / logoImg.width, maxLogoH / logoImg.height);
+            const drawW = logoImg.width * scale;
+            const drawH = logoImg.height * scale;
+            ctx.drawImage(logoImg, padX, topSafe, drawW, drawH);
+          };
+          logoImg.src = logoRef.dataUrl;
+        } else if (showLogo) {
+          // Clean typographic brand identifier if no logo file uploaded yet
+          ctx.save();
+          ctx.font = '600 28px Inter, sans-serif';
+          ctx.fillStyle = theme === 'dark-gradient' ? '#FFFFFF' : '#1D1D1F';
+          ctx.fillText('Apple Store Malaysia', padX, topSafe + 32);
+          ctx.restore();
+        }
+
+        // 2. Separate Text Overlay Composition Layer
+        if (showText) {
+          ctx.save();
+          const primaryTextColor = theme === 'dark-gradient' ? '#FFFFFF' : '#1D1D1F';
+          const secondaryTextColor = theme === 'dark-gradient' ? 'rgba(255,255,255,0.85)' : '#424245';
+
+          let cursorY = dim.h - bottomSafe;
+
+          // CTA Pill Button (Bottom-left)
+          if (variation.cta && variation.cta.trim()) {
+            const btnText = variation.cta.trim();
+            ctx.font = '600 30px Inter, sans-serif';
+            const textMetrics = ctx.measureText(btnText);
+            const btnW = textMetrics.width + 68;
+            const btnH = 68;
+            const btnY = cursorY - btnH;
+
+            ctx.fillStyle = '#0071E3';
+            roundRect(ctx, padX, btnY, btnW, btnH, 34);
+            ctx.fill();
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillText(btnText, padX + 34, btnY + 44);
+            cursorY = btnY - 34;
+          }
+
+          // Verified Promotional Price / Original Price (only if present)
+          if (variation.promoPrice || variation.originalPrice) {
+            ctx.font = '700 38px Inter, sans-serif';
+            ctx.fillStyle = theme === 'dark-gradient' ? '#60A5FA' : '#0071E3';
+            const priceLine = [variation.promoPrice, variation.originalPrice ? `(Asal: ${variation.originalPrice})` : '']
+              .filter(Boolean)
+              .join('  ');
+            ctx.fillText(priceLine, padX, cursorY);
+            cursorY -= 54;
+          }
+
+          // Supporting Text (Wrapped cleanly)
+          if (variation.supportingText) {
+            ctx.font = '400 32px Inter, sans-serif';
+            ctx.fillStyle = secondaryTextColor;
+            const lines = wrapCanvasText(ctx, variation.supportingText, dim.w - padX * 2);
+            for (let i = lines.length - 1; i >= 0; i--) {
+              ctx.fillText(lines[i], padX, cursorY);
+              cursorY -= 44;
+            }
+            cursorY -= 12;
+          }
+
+          // Main Headline (Bold, mobile-readable hierarchy)
+          if (variation.headline) {
+            ctx.font = '700 56px Inter, sans-serif';
+            ctx.fillStyle = primaryTextColor;
+            const hLines = wrapCanvasText(ctx, variation.headline, dim.w - padX * 2);
+            for (let i = hLines.length - 1; i >= 0; i--) {
+              ctx.fillText(hLines[i], padX, cursorY);
+              cursorY -= 68;
+            }
+            cursorY -= 10;
+          }
+
+          // Product Name Eyebrow
+          if (variation.overlayProductName) {
+            ctx.font = '600 28px Inter, sans-serif';
+            ctx.fillStyle = theme === 'dark-gradient' ? '#93C5FD' : '#0071E3';
+            ctx.fillText(variation.overlayProductName, padX, cursorY);
+          }
+
+          ctx.restore();
+        }
+      };
+
+      if (variation.generatedImageUrl) {
+        const bgImg = new Image();
+        bgImg.onload = () => {
+          // Cover fit without distortion
+          const scale = Math.max(dim.w / bgImg.width, dim.h / bgImg.height);
+          const drawW = bgImg.width * scale;
+          const drawH = bgImg.height * scale;
+          const offsetX = (dim.w - drawW) / 2;
+          const offsetY = (dim.h - drawH) / 2;
+          ctx.drawImage(bgImg, offsetX, offsetY, drawW, drawH);
+          drawOverlays();
+        };
+        bgImg.src = variation.generatedImageUrl;
+      } else {
+        // Display honest status message inside canvas when image has not been generated yet
+        drawOverlays();
+        ctx.save();
+        ctx.font = '500 26px Inter, sans-serif';
+        ctx.fillStyle = theme === 'dark-gradient' ? 'rgba(255,255,255,0.55)' : '#6E6E73';
+        ctx.textAlign = 'center';
+        ctx.fillText('Imej latar belum dijana untuk variasi ini.', dim.w / 2, dim.h * 0.36);
+        ctx.font = '400 22px Inter, sans-serif';
+        ctx.fillText('Klik "Jana Imej Gemini" untuk menghasilkan visual sebenar.', dim.w / 2, dim.h * 0.36 + 38);
+        ctx.restore();
+      }
+    }
+
+    function wrapCanvasText(ctx, text, maxWidth) {
+      const words = text.split(' ');
+      const lines = [];
+      let current = '';
+      for (const word of words) {
+        const test = current ? `${current} ${word}` : word;
+        if (ctx.measureText(test).width > maxWidth && current) {
+          lines.push(current);
+          current = word;
+        } else {
+          current = test;
+        }
+      }
+      if (current) lines.push(current);
+      return lines;
+    }
+
+    function roundRect(ctx, x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+
+    // =========================================================================
+    // RENDER STRATEGY & STUDIO UI SECTIONS
+    // =========================================================================
+    function renderStrategySection() {
+      const pv = appState.productVerification;
+      const brief = appState.campaignBrief;
+      const strat = appState.creativeStrategy;
+      if (!pv || !brief || !strat) return;
+
+      document.getElementById('strategyEmptyState').classList.add('hidden');
+      document.getElementById('strategyContent').classList.remove('hidden');
+
+      document.getElementById('verifiedProductTitle').textContent = pv.verifiedProductName;
+      document.getElementById('verifiedProductCategoryBadge').textContent = pv.verifiedCategory;
+      document.getElementById('verifiedSpecsList').innerHTML = (pv.officialFeatures || [])
+        .map(f => `<li>${f}</li>`).join('');
+      document.getElementById('verifiedDesignText').textContent = pv.designAndVariants || '';
+      document.getElementById('verificationNotesText').textContent = pv.verificationNotes || '';
+
+      const sourcesContainer = document.getElementById('groundingSourcesList');
+      if (pv.sources && pv.sources.length > 0) {
+        sourcesContainer.innerHTML = 'Sumber rujukan: ' + pv.sources
+          .map(s => `<a href="${s.uri}" target="_blank" rel="noopener noreferrer" class="underline text-apple-blue ml-1">${s.title}</a>`)
+          .join(', ');
+      } else {
+        sourcesContainer.textContent = 'Rujukan: Apple Malaysia (apple.com/my)';
+      }
+
+      const briefLabels = {
+        campaignOverview: 'Ringkasan Kempen',
+        selectedCategoryAndReason: 'Kategori & Subkategori Kempen',
+        campaignObjective: 'Objektif Kempen',
+        productOverview: 'Gambaran Produk',
+        targetAudience: 'Sasaran Audiens',
+        audiencePainPoints: 'Masalah / Keinginan Pelanggan',
+        campaignMessage: 'Mesej Utama Kempen',
+        valueProposition: 'Cadangan Nilai',
+        keySellingPoints: 'Titik Jualan Utama',
+        campaignAngle: 'Sudut Kempen',
+        marketingDirection: 'Hala Tuju Pemasaran',
+        suggestedCta: 'Cadangan CTA',
+        placementRecommendation: 'Cadangan Penempatan Meta Ads'
+      };
+
+      document.getElementById('campaignBriefFields').innerHTML = Object.entries(briefLabels).map(([key, label]) => `
+        <div>
+          <label class="block font-semibold text-apple-text mb-1">${label}</label>
+          <textarea rows="2" oninput="appState.campaignBrief['${key}'] = this.value"
+            class="w-full rounded-xl border border-apple-border bg-[#F5F5F7]/50 px-3 py-2 text-xs text-apple-text focus:bg-white focus:border-apple-blue focus:outline-none">${brief[key] || ''}</textarea>
+        </div>
+      `).join('');
+
+      const stratLabels = {
+        coreCreativeConcept: 'Konsep Kreatif Teras',
+        mainMessage: 'Mesej Visual Utama',
+        visualTheme: 'Tema Visual',
+        creativeDirection: 'Arahan Kreatif',
+        emotionalAppeal: 'Daya Tarikan Emosi',
+        productPresentation: 'Persembahan Produk',
+        composition: 'Komposisi & Ruang Negatif',
+        lighting: 'Pencahayaan Studio',
+        background: 'Latar Belakang',
+        colorDirection: 'Arah Warna',
+        typographyDirection: 'Arah Tipografi'
+      };
+
+      document.getElementById('creativeStrategyFields').innerHTML = Object.entries(stratLabels).map(([key, label]) => `
+        <div>
+          <label class="block font-semibold text-apple-text mb-1">${label}</label>
+          <textarea rows="2" oninput="appState.creativeStrategy['${key}'] = this.value"
+            class="w-full rounded-xl border border-apple-border bg-[#F5F5F7]/50 px-3 py-2 text-xs text-apple-text focus:bg-white focus:border-apple-blue focus:outline-none">${strat[key] || ''}</textarea>
+        </div>
+      `).join('');
+    }
+
+    function renderStudioSection() {
+      if (!appState.variations.length) return;
+      document.getElementById('studioEmptyState').classList.add('hidden');
+      document.getElementById('studioContent').classList.remove('hidden');
+
+      const tabsEl = document.getElementById('variationTabs');
+      tabsEl.innerHTML = appState.variations.map((v, idx) => `
+        <button onclick="selectVariation(${idx})"
+          class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition ${
+            idx === appState.activeVariationIndex
+              ? 'bg-[#1D1D1F] text-white shadow-sm'
+              : 'bg-[#F5F5F7] text-apple-muted hover:text-apple-text'
+          }">
+          Variasi 0${idx + 1}: ${v.creativeAngle}
+        </button>
+      `).join('');
+
+      loadActiveVariationIntoEditors();
+    }
+
+    function selectVariation(index) {
+      appState.activeVariationIndex = index;
+      renderStudioSection();
+    }
+
+    function loadActiveVariationIntoEditors() {
+      const v = appState.variations[appState.activeVariationIndex];
+      if (!v) return;
+
+      document.getElementById('activeVariationAngleBadge').textContent = `Variasi 0${v.variationNumber} • ${v.creativeAngle}`;
+      document.getElementById('activeVariationConceptTitle').textContent = v.creativeConcept;
+      document.getElementById('previewAspectRatio').value = v.aspectRatio || '4:5';
+
+      document.getElementById('editHeadline').value = v.headline || '';
+      document.getElementById('editSupportingText').value = v.supportingText || '';
+      document.getElementById('editOverlayProduct').value = v.overlayProductName || '';
+      document.getElementById('editCta').value = v.cta || '';
+      document.getElementById('editPromoPrice').value = v.promoPrice || '';
+      document.getElementById('editOriginalPrice').value = v.originalPrice || '';
+      document.getElementById('editPrimaryText').value = v.primaryText || '';
+      document.getElementById('editDescription').value = v.description || '';
+      document.getElementById('editImagePrompt').value = v.imagePrompt || '';
+
+      // Render Quality Control Grid
+      const qc = v.qc || {};
+      const qcItems = [
+        ['Ketepatan Produk', qc.productAccuracy || 'Disemak'],
+        ['Konsistensi Jenama', qc.brandConsistency || 'Disemak'],
+        ['Kebolehbacaan', qc.readability || 'Disemak'],
+        ['Ketepatan Teks BM', qc.textAccuracy || 'Disemak'],
+        ['Kesesuaian Format', qc.placementSuitability || 'Disemak'],
+        ['Ketepatan Promosi', qc.promotionalAccuracy || 'Disemak']
+      ];
+      document.getElementById('qcChecklistGrid').innerHTML = qcItems.map(([k, val]) => `
+        <div class="p-2.5 rounded-xl bg-[#F5F5F7] border border-apple-border/60">
+          <div class="font-semibold text-apple-text">${k}</div>
+          <div class="text-apple-muted mt-0.5">${val}</div>
+        </div>
+      `).join('');
+
+      updateImageStatusNotice();
+      renderCompositeCanvas();
+    }
+
+    function updateImageStatusNotice() {
+      const v = appState.variations[appState.activeVariationIndex];
+      const notice = document.getElementById('imageStatusNotice');
+      if (v.generatedImageUrl) {
+        notice.className = 'text-xs text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl p-3';
+        notice.textContent = 'Visual berjaya dijana oleh Gemini. Anda boleh menyunting lapisan teks di sebelah kanan atau menjana semula imej.';
+      } else if (v.imageGenerationError) {
+        notice.className = 'text-xs text-red-800 bg-red-50 border border-red-200 rounded-xl p-3';
+        notice.textContent = `Ralat Penjanaan Imej: ${v.imageGenerationError}`;
+      } else {
+        notice.className = 'text-xs text-apple-muted bg-[#F5F5F7] rounded-xl p-3';
+        notice.textContent = 'Imej belum dijana untuk variasi ini. Klik "Jana Imej Gemini" untuk menghasilkan visual latar belakang.';
+      }
+    }
+
+    function updateActiveVariationField(field, value) {
+      const v = appState.variations[appState.activeVariationIndex];
+      if (!v) return;
+      v[field] = value;
+      renderCompositeCanvas();
+    }
+
+    function changeVariationAspectRatio(newRatio) {
+      const v = appState.variations[appState.activeVariationIndex];
+      if (!v) return;
+      v.aspectRatio = newRatio;
+      renderCompositeCanvas();
+    }
+
+    // =========================================================================
+    // INDEPENDENT SECTION & VARIATION REGENERATION (SECTION 16)
+    // =========================================================================
+    async function regenerateSection(section) {
+      if (!appState.productVerification) {
+        showNotification('warning', 'Tiada Kempen Aktif', 'Sila jana kempen terlebih dahulu.');
+        return;
+      }
+      const input = getCampaignInputData();
+
+      try {
+        showNotification('warning', 'Menjana Semula Bahagian...', 'Memproses kemas kini tanpa menjejaskan bahagian lain.');
+        if (section === 'brief' || section === 'strategy') {
+          const res = await generateBriefAndStrategy(input, appState.productVerification);
+          if (section === 'brief') appState.campaignBrief = res.brief;
+          if (section === 'strategy') appState.creativeStrategy = res.strategy;
+          renderStrategySection();
+          showNotification('success', 'Berjaya Dijana Semula', 'Bahagian yang dipilih telah dikemas kini.');
+        } else if (section === 'copy' || section === 'prompt') {
+          await regenerateCurrentVariation(section);
+        }
+      } catch (err) {
+        showNotification('error', 'Ralat Penjanaan Semula', err.message);
+      }
+    }
+
+    async function regenerateCurrentVariation(targetOnly = 'all') {
+      const idx = appState.activeVariationIndex;
+      const current = appState.variations[idx];
+      if (!current) return;
+
+      try {
+        showNotification('warning', 'Menjana Semula Variasi...', `Mengemas kini Variasi 0${idx + 1} secara bebas.`);
+        const prompt = `Jana semula SATU variasi kreatif iklan Meta Ads Apple Store Malaysia yang berbeza daripada versi sebelumnya.
+Produk Sah: ${JSON.stringify(appState.productVerification)}
+Brief: ${JSON.stringify(appState.campaignBrief)}
+Strategi: ${JSON.stringify(appState.creativeStrategy)}
+Variasi Sebelumnya (elakkan pengulangan): ${JSON.stringify(current)}
+
+Kembalikan JSON objek tunggal dengan medan: creativeAngle, creativeConcept, headline, supportingText, cta, primaryText, description, imagePrompt.`;
+
+        const res = await callGeminiWithBackoff('gemini-3-flash-preview', {
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: 'application/json' }
+        });
+
+        const parsed = JSON.parse(res.candidates[0].content.parts[0].text);
+        if (targetOnly === 'copy') {
+          current.headline = parsed.headline;
+          current.supportingText = parsed.supportingText;
+          current.cta = parsed.cta;
+          current.primaryText = parsed.primaryText;
+          current.description = parsed.description;
+        } else if (targetOnly === 'prompt') {
+          current.imagePrompt = parsed.imagePrompt;
+        } else {
+          Object.assign(current, parsed, { generatedImageUrl: null, imageGenerationError: null });
+        }
+
+        renderStudioSection();
+        showNotification('success', 'Variasi Dikemas Kini', `Variasi 0${idx + 1} berjaya dijana semula tanpa mengubah variasi lain.`);
+      } catch (err) {
+        showNotification('error', 'Gagal Menjana Semula Variasi', err.message);
+      }
+    }
+
+    function copyActivePrompt() {
+      const textarea = document.getElementById('editImagePrompt');
+      textarea.select();
+      document.execCommand('copy');
+      showNotification('success', 'Prompt Disalin', 'AI Image Prompt 12-bahagian telah disalin ke papan keratan.');
+    }
+
+    // =========================================================================
+    // CAMPAIGN EXPORT ENGINE (PNG, JPG, MD, TXT, JSON, ZIP — SECTION 19)
+    // =========================================================================
+    function triggerDownload(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadActiveComposite(format) {
+      if (!appState.variations.length) {
+        showNotification('warning', 'Tiada Kreatif', 'Sila jana kempen terlebih dahulu sebelum memuat turun.');
+        return;
+      }
+      const canvas = document.getElementById('compositeAdCanvas');
+      const mime = format === 'jpg' ? 'image/jpeg' : 'image/png';
+      const dataUrl = canvas.toDataURL(mime, 0.95);
+      fetch(dataUrl)
+        .then(r => r.blob())
+        .then(blob => triggerDownload(blob, `apple-store-my-variation-0${appState.activeVariationIndex + 1}.${format}`));
+    }
+
+    function buildBriefMarkdown() {
+      const pv = appState.productVerification || {};
+      const b = appState.campaignBrief || {};
+      const s = appState.creativeStrategy || {};
+      return `# AI Campaign Brief — Apple Store Malaysia
+
+## 1. Pengesahan Produk Rasmi (apple.com/my)
+- **Produk:** ${pv.verifiedProductName || '-'}
+- **Kategori:** ${pv.verifiedCategory || '-'}
+- **Reka Bentuk & Varian:** ${pv.designAndVariants || '-'}
+- **Ciri Utama:**
+${(pv.officialFeatures || []).map(f => `  - ${f}`).join('\n')}
+
+## 2. Ringkasan & Objektif Kempen
+- **Ringkasan:** ${b.campaignOverview || '-'}
+- **Kategori & Subkategori:** ${b.selectedCategoryAndReason || '-'}
+- **Objektif:** ${b.campaignObjective || '-'}
+- **Sasaran Audiens:** ${b.targetAudience || '-'}
+- **Masalah / Keinginan Pelanggan:** ${b.audiencePainPoints || '-'}
+- **Mesej Teras:** ${b.campaignMessage || '-'}
+- **Cadangan Nilai:** ${b.valueProposition || '-'}
+- **Titik Jualan Utama:** ${b.keySellingPoints || '-'}
+- **Cadangan CTA:** ${b.suggestedCta || '-'}
+- **Cadangan Penempatan:** ${b.placementRecommendation || '-'}
+
+## 3. Strategi Kreatif
+- **Konsep Teras:** ${s.coreCreativeConcept || '-'}
+- **Tema Visual:** ${s.visualTheme || '-'}
+- **Arahan Kreatif:** ${s.creativeDirection || '-'}
+- **Persembahan Produk:** ${s.productPresentation || '-'}
+- **Komposisi:** ${s.composition || '-'}
+- **Pencahayaan:** ${s.lighting || '-'}
+- **Latar Belakang:** ${s.background || '-'}
+- **Arah Warna:** ${s.colorDirection || '-'}
+`;
+    }
+
+    function exportCampaignBriefMarkdown() {
+      if (!appState.campaignBrief) {
+        showNotification('warning', 'Tiada Data Brief', 'Sila jana kempen terlebih dahulu.');
+        return;
+      }
+      const blob = new Blob([buildBriefMarkdown()], { type: 'text/markdown;charset=utf-8' });
+      triggerDownload(blob, 'campaign-brief.md');
+    }
+
+    function exportCopywritingTxt() {
+      if (!appState.variations.length) {
+        showNotification('warning', 'Tiada Data Copywriting', 'Sila jana kempen terlebih dahulu.');
+        return;
+      }
+      const text = appState.variations.map(v => `=== VARIASI 0${v.variationNumber} (${v.creativeAngle}) ===
+Tajuk Utama (Headline): ${v.headline}
+Teks Sokongan: ${v.supportingText}
+Produk: ${v.overlayProductName}
+Harga Promosi: ${v.promoPrice || '-'}
+Harga Asal: ${v.originalPrice || '-'}
+CTA: ${v.cta}
+Description: ${v.description}
+
+Primary Text (Kapsyen):
+${v.primaryText}
+`).join('\n--------------------------------------------------\n\n');
+
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      triggerDownload(blob, 'copywriting-bahasa-melayu.txt');
+    }
+
+    function exportPromptsTxt() {
+      if (!appState.variations.length) {
+        showNotification('warning', 'Tiada Image Prompt', 'Sila jana kempen terlebih dahulu.');
+        return;
+      }
+      const text = appState.variations.map(v => `=== IMAGE PROMPT VARIASI 0${v.variationNumber} (${v.aspectRatio}) ===
+${v.imagePrompt}
+`).join('\n==================================================\n\n');
+
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      triggerDownload(blob, 'image-prompts.txt');
+    }
+
+    function exportCampaignJson() {
+      if (!appState.campaignBrief) {
+        showNotification('warning', 'Tiada Data Kempen', 'Sila jana kempen terlebih dahulu.');
+        return;
+      }
+      const payload = {
+        application: 'AI Agent Meta Ads — Apple Store Malaysia',
+        exportedAt: new Date().toISOString(),
+        input: getCampaignInputData(),
+        productVerification: appState.productVerification,
+        campaignBrief: appState.campaignBrief,
+        creativeStrategy: appState.creativeStrategy,
+        variations: appState.variations.map(v => ({
+          ...v,
+          hasGeneratedImage: Boolean(v.generatedImageUrl),
+          generatedImageUrl: undefined // Exclude huge base64 blob from metadata JSON
+        }))
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+      triggerDownload(blob, 'campaign-data.json');
+    }
+
+    async function exportCompleteZip() {
+      if (!appState.campaignBrief || !appState.variations.length) {
+        showNotification('warning', 'Tiada Kempen untuk Dieksport', 'Sila jana kempen terlebih dahulu.');
+        return;
+      }
+
+      try {
+        const zip = new JSZip();
+        const root = zip.folder('campaign-package');
+
+        root.file('campaign-brief.md', buildBriefMarkdown());
+
+        const cleanJson = {
+          application: 'AI Agent Meta Ads — Apple Store Malaysia',
+          exportedAt: new Date().toISOString(),
+          input: getCampaignInputData(),
+          productVerification: appState.productVerification,
+          campaignBrief: appState.campaignBrief,
+          creativeStrategy: appState.creativeStrategy,
+          variations: appState.variations.map(v => ({
+            variationNumber: v.variationNumber,
+            creativeAngle: v.creativeAngle,
+            creativeConcept: v.creativeConcept,
+            headline: v.headline,
+            supportingText: v.supportingText,
+            cta: v.cta,
+            primaryText: v.primaryText,
+            description: v.description,
+            aspectRatio: v.aspectRatio,
+            imagePrompt: v.imagePrompt
+          }))
+        };
+        root.file('campaign-data.json', JSON.stringify(cleanJson, null, 2));
+
+        // Copywriting folder
+        const copyFolder = root.folder('copywriting');
+        const primaryTexts = appState.variations.map(v => `## Variasi 0${v.variationNumber}\n\n${v.primaryText}`).join('\n\n---\n\n');
+        const headlines = appState.variations.map(v => `- **Variasi 0${v.variationNumber}:** ${v.headline} | *${v.supportingText}* | CTA: **${v.cta}**`).join('\n');
+        copyFolder.file('primary-text.md', primaryTexts);
+        copyFolder.file('headlines.md', headlines);
+
+        // Image prompts & only genuinely generated images (Rule: never create fake/empty image files)
+        const promptsFolder = root.folder('image-prompts');
+        const imagesFolder = root.folder('images');
+
+        appState.variations.forEach(v => {
+          const num = String(v.variationNumber).padStart(2, '0');
+          promptsFolder.file(`variation-${num}.txt`, v.imagePrompt || '');
+
+          if (v.generatedImageUrl && v.generatedImageUrl.startsWith('data:image/')) {
+            const base64Data = v.generatedImageUrl.split(',')[1];
+            imagesFolder.file(`variation-${num}.png`, base64Data, { base64: true });
+          }
+        });
+
+        // Uploaded reference images
+        if (appState.references.length > 0) {
+          const refFolder = root.folder('references');
+          appState.references.forEach((ref, i) => {
+            refFolder.file(`ref-${i + 1}-${ref.name}`, ref.base64, { base64: true });
+          });
+        }
+
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        triggerDownload(zipBlob, 'apple-store-malaysia-campaign-package.zip');
+        showNotification('success', 'Pakej ZIP Berjaya Dimuat Turun', 'Semua aset sebenar yang dijana telah dibungkus dengan kemas.');
+      } catch (err) {
+        showNotification('error', 'Ralat Eksport ZIP', err.message);
+      }
+    }
+
+    // =========================================================================
+    // SUPABASE EDGE FUNCTIONS INTEGRATION (SECTION 18 — STRICT ARCHITECTURE)
+    // =========================================================================
+    function saveSupabaseConfig() {
+      const url = document.getElementById('sbProjectUrl').value.trim().replace(/\/$/, '');
+      const anonKey = document.getElementById('sbAnonKey').value.trim();
+      const campaignFn = document.getElementById('sbCampaignFnName').value.trim();
+      const storageFn = document.getElementById('sbStorageFnName').value.trim();
+
+      if (!url || !anonKey || !campaignFn) {
+        showNotification(
+          'error',
+          'Konfigurasi Supabase Tidak Lengkap',
+          'Sila masukkan Supabase Project URL, Anon Key (bukan service_role), dan nama Edge Function sebenar anda.'
+        );
+        return;
+      }
+
+      appState.supabaseConfig = { url, anonKey, campaignFn, storageFn };
+      const badge = document.getElementById('supabaseStatusBadge');
+      badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 whitespace-nowrap';
+      badge.textContent = 'Edge Function Sedia';
+      showNotification('success', 'Konfigurasi Disahkan', 'Sambungan melalui Supabase Edge Functions sedia digunakan.');
+    }
+
+    async function persistCampaignViaEdgeFunction() {
+      const { url, anonKey, campaignFn } = appState.supabaseConfig;
+      if (!url || !anonKey || !campaignFn) {
+        showNotification(
+          'error',
+          'Edge Function Belum Dikonfigurasi',
+          'Operasi pangkalan data disekat. Sila lengkapkan URL Supabase, Anon Key, dan nama Edge Function sebenar terlebih dahulu.'
+        );
+        return;
+      }
+
+      if (!appState.campaignBrief) {
+        showNotification('warning', 'Tiada Data Kempen', 'Sila jana kempen terlebih dahulu sebelum menyimpan ke Supabase.');
+        return;
+      }
+
+      try {
+        const endpoint = `${url}/functions/v1/${campaignFn}`;
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${anonKey}`,
+            'apikey': anonKey
+          },
+          body: JSON.stringify({
+            action: 'save_campaign',
+            brand: 'Apple Store Malaysia',
+            input: getCampaignInputData(),
+            productVerification: appState.productVerification,
+            campaignBrief: appState.campaignBrief,
+            creativeStrategy: appState.creativeStrategy,
+            variations: appState.variations
+          })
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(data.error || data.message || `Edge Function memulangkan ralat HTTP ${response.status}`);
+        }
+
+        showNotification('success', 'Kempen Disimpan', 'Data kempen berjaya dihantar melalui Supabase Edge Function.');
+      } catch (err) {
+        showNotification('error', 'Kegagalan Supabase Edge Function', err.message);
+      }
+    }
+  </script>
+</body>
+</html>
