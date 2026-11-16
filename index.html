@@ -186,12 +186,7 @@
               </div>
               <div class="flex items-center gap-2">
                 <label class="text-xs font-medium text-apple-muted">Kuantiti Variasi:</label>
-                <select id="variationCount" class="rounded-xl border border-apple-border bg-[#F5F5F7] px-3 py-1.5 text-xs font-semibold text-apple-text focus:outline-none focus:border-apple-blue">
-                  <option value="1">1 Variasi</option>
-                  <option value="2">2 Variasi</option>
-                  <option value="3" selected>3 Variasi (Default)</option>
-                  <option value="4">4 Variasi</option>
-                </select>
+                <span class="px-3 py-1.5 rounded-xl bg-[#F5F5F7] text-xs font-semibold text-apple-text">3 Variations — Fixed</span>
               </div>
             </div>
 
@@ -216,7 +211,7 @@
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-apple-text mb-1.5">Produk Apple (Product) <span class="text-red-500">*</span></label>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Apple product (optional — AI may select from products.csv)</label>
                 <input id="productName" type="text" placeholder="Contoh: iPhone 16 Pro Max, MacBook Air M3, AirPods Pro 2"
                   class="w-full rounded-xl border border-apple-border px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none" />
               </div>
@@ -237,21 +232,19 @@
               <div>
                 <label class="block text-xs font-medium text-apple-text mb-1.5">Kategori Kempen (Hybrid Mode)</label>
                 <select id="campaignCategory" class="w-full rounded-xl border border-apple-border bg-white px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none">
-                  <option value="Auto" selected>Auto — AI Tentukan Kategori Terbaik</option>
-                  <option value="Product">1. Product (Produk)</option>
-                  <option value="Promotion">2. Promotion (Promosi)</option>
-                  <option value="Lifestyle">3. Lifestyle (Gaya Hidup)</option>
-                  <option value="Education">4. Education (Pendidikan)</option>
-                  <option value="News">5. News (Berita / Terkini)</option>
-                  <option value="Comparison">6. Comparison (Perbandingan)</option>
-                  <option value="Tips">7. Tips (Tip & Panduan)</option>
+                  <option value="Auto" selected>Auto — AI selects category</option>
+                  <option value="Product Showcase">Product Showcase</option>
+                  <option value="Product Education">Product Education</option>
+                  <option value="Campaign & Promotion">Campaign & Promotion</option>
+                  <option value="Tips, Tricks & Hacks">Tips, Tricks & Hacks</option>
                 </select>
               </div>
 
               <div>
                 <label class="block text-xs font-medium text-apple-text mb-1.5">Subkategori Kempen (Pilihan)</label>
-                <input id="campaignSubcategory" type="text" placeholder="Biarkan kosong untuk cadangan automatik AI"
-                  class="w-full rounded-xl border border-apple-border px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none" />
+                <select id="campaignSubcategory" class="w-full rounded-xl border border-apple-border bg-white px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none">
+                  <option value="">Auto — AI selects subcategory</option>
+                </select>
               </div>
 
               <div>
@@ -274,7 +267,7 @@
             <div class="bg-[#F5F5F7] rounded-2xl p-4 space-y-3 border border-apple-border/60">
               <div class="flex items-center justify-between">
                 <span class="text-xs font-semibold text-apple-text">Butiran Promosi & Harga Sah (Pilihan)</span>
-                <span class="text-[11px] text-apple-muted">AI dilarang mencipta harga atau diskaun palsu</span>
+                <span class="text-[11px] text-apple-muted">Check products.csv first; estimates must be clearly labeled and unverified.</span>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
@@ -337,7 +330,7 @@
             <div>
               <h2 class="text-base font-semibold text-apple-text">Pengurusan Imej Rujukan</h2>
               <p class="text-xs text-apple-muted mt-0.5">
-                Muat naik logo rasmi Apple Store Malaysia atau imej produk. AI akan menganalisis tujuan imej secara automatik.
+                Upload optional product or visual references. The original brand logo is loaded from the configured transparent PNG URL at finalization.
               </p>
             </div>
 
@@ -346,7 +339,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
               </svg>
               <span class="text-xs font-medium text-apple-text">Klik untuk muat naik imej rujukan</span>
-              <span class="text-[11px] text-apple-muted mt-0.5">PNG, JPG, WEBP (Logo, Produk, Gaya Hidup)</span>
+              <span class="text-[11px] text-apple-muted mt-0.5">PNG, JPG, WEBP (product and visual references only)</span>
               <input id="referenceImageInput" type="file" accept="image/png,image/jpeg,image/webp" multiple class="hidden" onchange="handleReferenceUpload(event)" />
             </label>
 
@@ -358,7 +351,7 @@
             </div>
 
             <div class="p-3 rounded-xl bg-amber-50 border border-amber-200/80 text-[11px] text-amber-900 leading-relaxed">
-              <strong>Polisi Logo Rasmi:</strong> Logo Apple Store Malaysia yang dimuat naik akan dikekalkan nisbah asal tanpa ubah suai dan diletakkan sebagai lapisan tindanan berasingan di bucu kiri atas secara lalai.
+              <strong>Original Logo Policy:</strong> Finalization requires the configured original transparent PNG URL. Uploaded reference files are not accepted as the final logo. The logo is composited separately at the fixed top-left position.
             </div>
           </div>
 
@@ -518,10 +511,11 @@
         <!-- Variation Selector Bar -->
         <div class="bg-white rounded-2xl border border-apple-border/70 p-3 flex flex-wrap items-center justify-between gap-3 shadow-sm">
           <div id="variationTabs" class="flex flex-wrap items-center gap-2"></div>
-          <div class="flex items-center gap-2">
-            <button onclick="regenerateCurrentVariation()" class="px-3.5 py-1.5 rounded-xl border border-apple-border hover:bg-[#F5F5F7] text-xs font-medium text-apple-text transition">
-              Regenerate Variasi Ini
-            </button>
+          <div class="flex flex-wrap items-center gap-2">
+            <span id="manualRevisionStatus" class="text-[11px] text-apple-muted">Manual revisions: 0 / 3</span>
+            <button onclick="regenerateAllVariations()" class="px-3.5 py-1.5 rounded-xl border border-apple-border hover:bg-[#F5F5F7] text-xs font-medium text-apple-text transition">Regenerate All 3</button>
+            <button onclick="regenerateCurrentVariation()" class="px-3.5 py-1.5 rounded-xl border border-apple-border hover:bg-[#F5F5F7] text-xs font-medium text-apple-text transition">Revise This Variation</button>
+            <button onclick="finalizeSelectedVariation()" class="px-3.5 py-1.5 rounded-xl bg-apple-blue hover:bg-apple-blueHover text-white text-xs font-semibold transition">Select & Finalize</button>
           </div>
         </div>
 
@@ -537,11 +531,7 @@
                   <h3 id="activeVariationConceptTitle" class="text-sm font-semibold text-apple-text mt-1"></h3>
                 </div>
                 <div class="flex items-center gap-1.5">
-                  <select id="previewAspectRatio" onchange="changeVariationAspectRatio(this.value)" class="rounded-xl border border-apple-border bg-[#F5F5F7] px-2.5 py-1.5 text-xs font-medium text-apple-text">
-                    <option value="4:5">Feed (4:5)</option>
-                    <option value="1:1">Square Feed (1:1)</option>
-                    <option value="9:16">Stories / Reels (9:16)</option>
-                  </select>
+                  <span class="rounded-xl bg-[#F5F5F7] px-2.5 py-1.5 text-xs font-semibold text-apple-text">Feed · 4:5 · 1080 × 1350</span>
                   <button id="btnGenerateImage" onclick="generateImageForActiveVariation()" class="px-3 py-1.5 rounded-xl bg-apple-blue hover:bg-apple-blueHover text-white text-xs font-medium transition">
                     Jana Imej Gemini
                   </button>
@@ -565,7 +555,7 @@
 
               <!-- Download Single Composite Creative -->
               <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-                <span class="text-[11px] text-apple-muted">Lapisan teks dan logo digabungkan berasingan daripada imej AI.</span>
+                <span class="text-[11px] text-apple-muted">Preview only. Final export requires the original transparent PNG logo URL.</span>
                 <div class="flex items-center gap-2">
                   <button onclick="downloadActiveComposite('png')" class="px-3 py-1.5 rounded-xl bg-[#1D1D1F] hover:bg-black text-white text-xs font-medium transition">
                     Muat Turun PNG
@@ -812,11 +802,17 @@
       isGenerating: false,
       activeTab: 'input',
       activeVariationIndex: 0,
-      references: [], // { id, name, type, mimeType, base64, dataUrl, aiAnalysis }
+      references: [], // Optional product/lifestyle references only; logo comes from configured URL.
+      productCatalog: [],
       productVerification: null,
       campaignBrief: null,
       creativeStrategy: null,
-      variations: [], // Each variation has independent concept, copy, prompt, imageDataUrl, aspectRatio, qc
+      variations: [],
+      variationBatches: [],
+      manualRevisionCount: 0,
+      selectedVariationIndex: null,
+      finalCanvas: null,
+      originalLogoImage: null,
       supabaseConfig: {
         url: '',
         anonKey: '',
@@ -2168,6 +2164,728 @@ ${v.imagePrompt}
         showNotification('error', 'Kegagalan Supabase Edge Function', err.message);
       }
     }
+
+
+    // =========================================================================
+    // REQUIREMENT v1 OVERRIDES — GAP-01 THROUGH GAP-41
+    // =========================================================================
+    // Logo URL is supplied by runtime configuration. GAP-42 decides where
+    // users edit this value; no configuration surface is assumed here.
+    const getConfiguredLogoUrl = () => window.APP_CONFIG?.logoUrl || '';
+    const CATEGORY_NAMES = ['Product Showcase', 'Product Education', 'Campaign & Promotion', 'Tips, Tricks & Hacks'];
+    let categoryGuideCache = null;
+    let promptTemplateCache = null;
+
+    function parseCsvRecords(text) {
+      const rows = [];
+      let row = [], cell = '', quoted = false;
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i], next = text[i + 1];
+        if (ch === '"' && quoted && next === '"') { cell += '"'; i++; }
+        else if (ch === '"') quoted = !quoted;
+        else if (ch === ',' && !quoted) { row.push(cell); cell = ''; }
+        else if ((ch === '\n' || ch === '\r') && !quoted) {
+          if (ch === '\r' && next === '\n') i++;
+          row.push(cell); cell = '';
+          if (row.some(v => v.trim() !== '')) rows.push(row);
+          row = [];
+        } else cell += ch;
+      }
+      if (cell.length || row.length) { row.push(cell); rows.push(row); }
+      const headers = (rows.shift() || []).map(v => v.trim());
+      return rows.map(values => Object.fromEntries(headers.map((h, i) => [h, (values[i] || '').trim()])));
+    }
+
+    async function loadProductCatalog() {
+      if (appState.productCatalog.length) return appState.productCatalog;
+      const response = await fetch('./products.csv', { cache: 'no-store' });
+      if (!response.ok) throw new Error('products.csv could not be loaded. Product matching is blocked.');
+      appState.productCatalog = parseCsvRecords(await response.text());
+      return appState.productCatalog;
+    }
+
+    function normalizeProductName(value) {
+      return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    }
+
+    function findCatalogProduct(name, catalog) {
+      const wanted = normalizeProductName(name);
+      if (!wanted) return null;
+      return catalog.find(row => normalizeProductName(row['Product Name']) === wanted)
+        || catalog.find(row => {
+          const candidate = normalizeProductName(row['Product Name']);
+          return candidate.length > 4 && (wanted.includes(candidate) || candidate.includes(wanted));
+        }) || null;
+    }
+
+    async function loadCategoryGuide() {
+      if (categoryGuideCache) return categoryGuideCache;
+      const response = await fetch('./category.md', { cache: 'no-store' });
+      if (!response.ok) throw new Error('category.md could not be loaded.');
+      categoryGuideCache = await response.text();
+      return categoryGuideCache;
+    }
+
+    async function loadPromptTemplates() {
+      if (promptTemplateCache) return promptTemplateCache;
+      const response = await fetch('./templateprompt.md', { cache: 'no-store' });
+      if (!response.ok) throw new Error('templateprompt.md could not be loaded.');
+      promptTemplateCache = await response.text();
+      return promptTemplateCache;
+    }
+
+    function getCategoryTemplate(documentText, categoryName) {
+      const index = CATEGORY_NAMES.indexOf(categoryName);
+      const ids = ['TEMPLATE-01', 'TEMPLATE-02', 'TEMPLATE-03', 'TEMPLATE-04'];
+      const marker = '## ' + ids[index];
+      const start = documentText.indexOf(marker);
+      if (start < 0) return documentText;
+      const next = documentText.indexOf('\n## TEMPLATE-', start + marker.length);
+      return documentText.slice(start, next < 0 ? documentText.length : next);
+    }
+
+    function initializeCategorySelectors() {
+      const categorySelect = document.getElementById('campaignCategory');
+      const subcategorySelect = document.getElementById('campaignSubcategory');
+      if (!categorySelect || !subcategorySelect) return;
+      (async () => {
+        try {
+          const guide = await loadCategoryGuide();
+          const lines = guide.split(/\r?\n/);
+          const taxonomy = {};
+          let current = null;
+          for (const line of lines) {
+            const heading = line.match(/^## \d+\.\s+(.+)$/);
+            if (heading && CATEGORY_NAMES.includes(heading[1].trim())) {
+              current = heading[1].trim();
+              taxonomy[current] = [];
+            } else if (current && line.startsWith('|')) {
+              const cells = line.split('|').map(v => v.trim());
+              const name = cells[1];
+              if (name && name !== 'Subcategory Name' && !/^[-:]+$/.test(name)) taxonomy[current].push(name);
+            }
+          }
+          categorySelect.addEventListener('change', () => {
+            subcategorySelect.innerHTML = '<option value="">Auto — AI selects subcategory</option>';
+            (taxonomy[categorySelect.value] || []).forEach(name => {
+              const option = document.createElement('option');
+              option.value = name;
+              option.textContent = name;
+              subcategorySelect.appendChild(option);
+            });
+          });
+          categorySelect.dispatchEvent(new Event('change'));
+        } catch (error) {
+          showNotification('error', 'Category data unavailable', error.message);
+        }
+      })();
+    }
+
+    verifyAppleMalaysiaProduct = async function(input) {
+      const catalog = await loadProductCatalog();
+      let record = input.productName ? findCatalogProduct(input.productName, catalog) : null;
+      let productSelectionReason = '';
+      if (!input.productName) {
+        const candidates = catalog.map(row => ({
+          name: row['Product Name'],
+          category: row['Product Category'],
+          model: row['Model'],
+          features: row['Product Features'],
+          capabilities: row['Product Capabilities']
+        }));
+        const selectionPrompt = 'Select the most relevant Apple product only from this products.csv catalog for the campaign brief. Do not invent or rename products. If a product is not needed for the selected content objective, return null. User brief: '
+          + JSON.stringify(input) + '\nCatalog: ' + JSON.stringify(candidates)
+          + '\nReturn JSON only: {"productName":"exact Product Name from catalog or null","reason":"short reason"}.';
+        const selectionResponse = await callGeminiWithBackoff('gemini-3-flash-preview', {
+          contents: [{ role: 'user', parts: [{ text: selectionPrompt }] }],
+          generationConfig: { responseMimeType: 'application/json' }
+        });
+        const selectionText = selectionResponse?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (selectionText) {
+          const selection = JSON.parse(selectionText);
+          record = selection.productName ? findCatalogProduct(selection.productName, catalog) : null;
+          productSelectionReason = selection.reason || '';
+        }
+      }
+      if (input.productName && !record) {
+        return {
+          verifiedProductName: '',
+          verifiedCategory: '',
+          isRealAppleProduct: false,
+          productNotFound: true,
+          productRecord: null,
+          catalogPriceMYR: null,
+          estimatedPriceMYR: null,
+          officialFeatures: [],
+          designAndVariants: 'No product visual will be generated because the requested product is not present in products.csv.',
+          verificationNotes: 'Requested product not found in products.csv. Generate a relevant product-free concept; do not substitute another model.',
+          sources: [{ title: 'products.csv', uri: './products.csv' }]
+        };
+      }
+      if (!record) {
+        return {
+          verifiedProductName: '',
+          verifiedCategory: '',
+          isRealAppleProduct: false,
+          productNotFound: true,
+          productRecord: null,
+          catalogPriceMYR: null,
+          estimatedPriceMYR: null,
+          officialFeatures: [],
+          designAndVariants: 'The AI did not select a product for this content objective. Generate a product-free concept.',
+          verificationNotes: 'No product selected from products.csv. Do not invent a product.',
+          productSelectionReason: productSelectionReason,
+          sources: [{ title: 'products.csv', uri: './products.csv' }]
+        };
+      }
+      const priceText = String(record['Starting Price (MYR)'] || '').trim();
+      const catalogPrice = /^\d+(?:\.\d+)?$/.test(priceText) ? Number(priceText) : null;
+      let estimatedPriceMYR = null;
+      let estimatedPriceNote = '';
+      if (catalogPrice === null && (!priceText || /not available|n\/a|unknown/i.test(priceText))) {
+        try {
+          const estimatePrompt = 'Using internal model knowledge only and no web search, estimate a plausible Malaysian starting retail price in MYR for this exact Apple product: '
+            + record['Product Name'] + ' (' + record['Model'] + '). Return JSON only: {"estimatedPriceMYR": number or null, "note": "short note that the estimate is unverified"}. If you cannot make a responsible estimate, return null. Do not claim this is an official Apple Store Malaysia price.';
+          const estimateResponse = await callGeminiWithBackoff('gemini-3-flash-preview', {
+            contents: [{ role: 'user', parts: [{ text: estimatePrompt }] }],
+            generationConfig: { responseMimeType: 'application/json' }
+          });
+          const estimateText = estimateResponse?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (estimateText) {
+            const estimate = JSON.parse(estimateText);
+            if (Number.isFinite(Number(estimate.estimatedPriceMYR)) && Number(estimate.estimatedPriceMYR) > 0) {
+              estimatedPriceMYR = Number(estimate.estimatedPriceMYR);
+              estimatedPriceNote = estimate.note || 'AI internal-knowledge estimate; not verified.';
+            }
+          }
+        } catch (error) {
+          estimatedPriceNote = 'AI could not provide a responsible internal-knowledge estimate.';
+        }
+      }
+      return {
+        verifiedProductName: record['Product Name'],
+        verifiedCategory: record['Product Category'],
+        isRealAppleProduct: true,
+        productNotFound: false,
+        productRecord: record,
+        productSelectionReason: productSelectionReason,
+        officialFeatures: [record['Product Features'], record['Technical Specifications'], record['Product Capabilities']].filter(v => v && !/^not available$/i.test(v)),
+        designAndVariants: [record['Product Design'], record['Available Product Variants'], record['Color & Finish']].filter(Boolean).join(' | '),
+        catalogPriceMYR: catalogPrice,
+        estimatedPriceMYR: estimatedPriceMYR,
+        estimatedPriceNote: estimatedPriceNote,
+        priceLabel: catalogPrice !== null ? 'Catalog Price' : estimatedPriceMYR !== null ? 'Estimated Price' : '',
+        verificationNotes: 'Product facts and visual attributes are sourced from products.csv. Fields marked Not Available must not be inferred.',
+        sources: [{ title: 'products.csv', uri: './products.csv' }]
+      };
+    };
+
+    generateBriefAndStrategy = async function(input, productInfo) {
+      const guide = await loadCategoryGuide();
+      const categoryInstruction = input.campaignCategory === 'Auto'
+        ? 'Select the most relevant category and subcategory automatically from the four allowed categories.'
+        : 'Use the user-selected category exactly: ' + input.campaignCategory + '.';
+      const subcategoryInstruction = input.campaignSubcategory
+        ? 'Use the user-selected subcategory exactly: ' + input.campaignSubcategory + '.'
+        : 'Select the most relevant subcategory from the selected category.';
+      const systemPrompt = 'You are a senior creative director for Apple Store Malaysia. All visible creative copy must be in natural, concise English. Do not invent product specifications, compatibility, prices, promotions, availability, or official claims. Allowed categories: ' + CATEGORY_NAMES.join('; ') + '.';
+      const userPrompt = 'Create an AI Campaign Brief and Creative Direction for one Instagram Feed creative.\n\nCATEGORY GUIDE:\n' + guide
+        + '\n\nPRODUCT RECORD:\n' + JSON.stringify(productInfo)
+        + '\n\nUSER INPUT:\n' + JSON.stringify(input)
+        + '\n\nCATEGORY RULES:\n' + categoryInstruction + '\n' + subcategoryInstruction
+        + '\nThe selected category and subcategory must be included in JSON. If productInfo.productNotFound is true, do not display a product or substitute another model.'
+        + '\n\nPRICE RULES:\nUse products.csv catalogPriceMYR first. If unavailable, use estimatedPriceMYR only when provided. All prices are MYR (RM). Any estimate must be labeled exactly "Estimated Price" and include a clear note that it is unverified. Never represent an estimate as an official Apple Store Malaysia price.'
+        + '\n\nBRAND AND FORMAT RULES:\nPremium, minimal, professional Apple-inspired visual direction; Apple Store Malaysia context; no unsupported official Apple claims. Instagram Feed portrait 4:5, 1080 × 1350 px. Reserve a fixed top-left logo safe area. No logo inside the generated base image. CTA is optional and AI-selected based on category and objective. Determine product count and text density based on the concept.'
+        + '\n\nReturn valid JSON only with this shape:\n{"brief":{"campaignOverview":"English summary","selectedCategory":"exact category name","selectedSubcategory":"exact subcategory name","selectionReason":"reason","campaignObjective":"objective","productOverview":"verified product summary or product-free concept","targetAudience":"audience","audiencePainPoints":"audience need","campaignMessage":"key message","valueProposition":"value","keySellingPoints":"verified points only","campaignAngle":"angle","marketingDirection":"direction","suggestedCta":"CTA or empty string","priceDisplay":"catalog price, estimated price with note, or omit"},"strategy":{"coreCreativeConcept":"one consistent concept shared by all variations","mainMessage":"message","visualTheme":"theme","creativeDirection":"direction","emotionalAppeal":"appeal","productPresentation":"presentation","composition":"base composition approach","lighting":"lighting","background":"background","colorDirection":"palette","typographyDirection":"separate overlay typography direction","visualObjective":"objective","mainSubject":"subject","productRelevance":"relevance","recommendedFormatRatio":"4:5"}}';
+      const response = await callGeminiWithBackoff('gemini-3-flash-preview', {
+        contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: { responseMimeType: 'application/json' }
+      });
+      const raw = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!raw) throw new Error('Gemini did not return a campaign brief.');
+      const result = JSON.parse(raw);
+      if (!CATEGORY_NAMES.includes(result.brief?.selectedCategory)) throw new Error('AI selected a category outside the approved four categories.');
+      const guideLines = guide.split(/\r?\n/);
+      let activeCategory = null;
+      const allowedSubcategories = [];
+      for (const line of guideLines) {
+        const heading = line.match(/^## \d+\.\s+(.+)$/);
+        if (heading) activeCategory = heading[1].trim();
+        else if (activeCategory === result.brief.selectedCategory && line.startsWith('|')) {
+          const cells = line.split('|').map(value => value.trim());
+          const name = cells[1];
+          if (name && name !== 'Subcategory Name' && !/^[-:]+$/.test(name)) allowedSubcategories.push(name);
+        }
+      }
+      if (!allowedSubcategories.includes(result.brief?.selectedSubcategory)) throw new Error('AI selected a subcategory outside category.md.');
+      return result;
+    };
+
+    generateCreativeVariations = async function(input, productInfo, brief, strategy) {
+      const guide = await loadCategoryGuide();
+      const templates = await loadPromptTemplates();
+      const selectedTemplate = getCategoryTemplate(templates, brief.selectedCategory);
+      const systemPrompt = 'You are a senior commercial art director and prompt engineer for Apple Store Malaysia. Write all visible creative copy in English. Generate exactly three variations. They share category, subcategory, central concept, factual product details, price facts, and brand identity. The primary visual difference is composition only. Creative copy may be adapted without changing facts.';
+      const userPrompt = 'CATEGORY-SPECIFIC TEMPLATE:\n' + selectedTemplate
+        + '\n\nCATEGORY GUIDE:\n' + guide
+        + '\n\nPRODUCT RECORD:\n' + JSON.stringify(productInfo)
+        + '\n\nCAMPAIGN BRIEF:\n' + JSON.stringify(brief)
+        + '\n\nCREATIVE STRATEGY:\n' + JSON.stringify(strategy)
+        + '\n\nUSER INPUT:\n' + JSON.stringify(input)
+        + '\n\nSTRICT RULES:\nReturn exactly 3 variation objects. Keep the central concept and visual direction consistent. Differentiate primarily through composition (camera angle, placement, crop, negative-space arrangement, or subject positioning); do not create unrelated concepts. You may adapt headline, supporting text, key message and CTA while preserving all facts. All visible copy is English. If productInfo.productNotFound is true, overlayProductName must be empty and no device may appear. Use catalogPriceMYR first; if using estimatedPriceMYR, display exact label "Estimated Price" and note "Unverified estimate — not an official Apple Store Malaysia price." Currency is MYR (RM). CTA is optional and AI-selected. Image prompt is English and has 12 sections: SUBJECT, ACTION, PRODUCT, ENVIRONMENT, COMPOSITION, VISUAL STYLE, LIGHTING, CAMERA AND QUALITY, COLOR AND MOOD, DETAILS, NEGATIVE CONSTRAINTS, FINAL INSTRUCTION. No baked-in text, logo, watermark, fake UI, or pseudo-branding. Leave a fixed top-left logo safe area. Instagram Feed portrait 4:5, 1080 × 1350 px.'
+        + '\nReturn JSON array only. Each object must contain variationNumber, creativeAngle, creativeConcept, headline, supportingText, overlayProductName, promoPrice, originalPrice, priceLabel, priceNote, cta, primaryText, description, aspectRatio, imagePrompt, qc.';
+      const response = await callGeminiWithBackoff('gemini-3-flash-preview', {
+        contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: { responseMimeType: 'application/json' }
+      });
+      const raw = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!raw) throw new Error('Gemini did not return creative variations.');
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed) || parsed.length !== 3) throw new Error('The AI must return exactly three variations.');
+      const catalogPrice = productInfo.catalogPriceMYR;
+      const estimatedPrice = productInfo.estimatedPriceMYR;
+      const priceValue = catalogPrice !== null && catalogPrice !== undefined
+        ? 'RM ' + Number(catalogPrice).toLocaleString('en-MY')
+        : estimatedPrice !== null && estimatedPrice !== undefined
+          ? 'RM ' + Number(estimatedPrice).toLocaleString('en-MY')
+          : '';
+      return parsed.map((variation, index) => ({
+        ...variation,
+        variationNumber: index + 1,
+        aspectRatio: '4:5',
+        promoPrice: variation.promoPrice || priceValue,
+        priceLabel: estimatedPrice !== null && estimatedPrice !== undefined && (catalogPrice === null || catalogPrice === undefined) ? 'Estimated Price' : (variation.priceLabel || ''),
+        priceNote: estimatedPrice !== null && estimatedPrice !== undefined && (catalogPrice === null || catalogPrice === undefined)
+          ? 'Unverified estimate — not an official Apple Store Malaysia price.'
+          : (variation.priceNote || ''),
+        generatedImageUrl: null,
+        imageGenerationError: null,
+        qc: { status: 'Pending', attempts: 0, issues: [] }
+      }));
+    };
+
+    async function runVariationQC(index) {
+      const variation = appState.variations[index];
+      if (!variation || !variation.generatedImageUrl) {
+        if (variation) variation.qc = { status: 'Failed', attempts: variation.qc?.attempts || 0, issues: ['Generated image is missing.'] };
+        return false;
+      }
+      const base64 = variation.generatedImageUrl.split(',')[1];
+      const mimeType = variation.generatedImageUrl.match(/^data:([^;]+)/)?.[1] || 'image/png';
+      const prompt = 'Strictly review this Apple Store Malaysia Instagram Feed image. Variation: ' + JSON.stringify(variation)
+        + '\nProduct facts: ' + JSON.stringify(appState.productVerification)
+        + '\nCampaign brief: ' + JSON.stringify(appState.campaignBrief)
+        + '\nCheck category fit, verifiable product accuracy, composition and top-left logo safe area, English copy readability (copy is composited separately), premium brand consistency, and 4:5 suitability. Mark unverifiable details as Uncertain, not Pass. Return JSON only: {"passed":boolean,"checks":{"category":"Pass/Fail/Uncertain","productAccuracy":"Pass/Fail/Uncertain","composition":"Pass/Fail","readability":"Pass/Fail","brand":"Pass/Fail","format":"Pass/Fail"},"issues":["specific issue"],"repairInstructions":"minimal corrections or empty string"}.';
+      const response = await callGeminiWithBackoff('gemini-3-flash-preview', {
+        contents: [{ role: 'user', parts: [{ text: prompt }, { inlineData: { mimeType: mimeType, data: base64 } }] }],
+        generationConfig: { responseMimeType: 'application/json' }
+      });
+      const raw = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!raw) throw new Error('AI QC returned no report.');
+      const report = JSON.parse(raw);
+      variation.qc = {
+        ...report,
+        productAccuracy: report.checks?.productAccuracy || 'Uncertain',
+        brandConsistency: report.checks?.brand || 'Uncertain',
+        readability: report.checks?.readability || 'Uncertain',
+        textAccuracy: report.checks?.readability || 'Uncertain',
+        placementSuitability: report.checks?.format || 'Uncertain',
+        promotionalAccuracy: report.checks?.productAccuracy || 'Uncertain',
+        status: report.passed ? 'Passed' : 'Failed',
+        attempts: variation.qc?.attempts || 0,
+        issues: Array.isArray(report.issues) ? report.issues : []
+      };
+      const badge = document.getElementById('qcOverallBadge');
+      if (badge) {
+        badge.textContent = variation.qc.status === 'Passed' ? 'QC Passed' : 'QC Failed';
+        badge.className = variation.qc.status === 'Passed'
+          ? 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700'
+          : 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-red-50 text-red-700';
+      }
+      return Boolean(report.passed);
+    }
+
+    async function repairSingleVariation(index, repairInstructions) {
+      const variation = appState.variations[index];
+      const prompt = 'Repair only this failed variation. Preserve category, subcategory, central creative concept, product identity, factual details, price and qualifiers, and brand facts. All copy remains English. Main visual correction should be composition-focused. Do not create a new campaign concept.\nPRODUCT FACTS: '
+        + JSON.stringify(appState.productVerification) + '\nBRIEF: ' + JSON.stringify(appState.campaignBrief)
+        + '\nCURRENT VARIATION: ' + JSON.stringify(variation) + '\nQC INSTRUCTIONS: ' + repairInstructions
+        + '\nReturn one JSON object with creativeAngle, creativeConcept, headline, supportingText, overlayProductName, promoPrice, originalPrice, priceLabel, priceNote, cta, primaryText, description, imagePrompt.';
+      const response = await callGeminiWithBackoff('gemini-3-flash-preview', {
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: { responseMimeType: 'application/json' }
+      });
+      const raw = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!raw) throw new Error('AI repair did not return a variation.');
+      Object.assign(variation, JSON.parse(raw), {
+        variationNumber: index + 1, aspectRatio: '4:5',
+        generatedImageUrl: null, imageGenerationError: null,
+        qc: { status: 'Repairing', attempts: (variation.qc?.attempts || 0) + 1, issues: [] }
+      });
+    }
+
+    async function generateAndValidateAllVariations() {
+      for (let index = 0; index < appState.variations.length; index++) {
+        updatePipelineProgress(4, 4, 'Generating and checking variation ' + (index + 1) + ' of 3...');
+        let passed = false;
+        let issues = [];
+        for (let attempt = 0; attempt <= 3; attempt++) {
+          if (attempt > 0) await repairSingleVariation(index, issues.join('; ') || 'Correct all QC failures.');
+          await originalGenerateImageForVariation(index);
+          if (appState.variations[index].generatedImageUrl) {
+            passed = await runVariationQC(index);
+            issues = appState.variations[index].qc.issues || [];
+          } else {
+            issues = [appState.variations[index].imageGenerationError || 'Image generation failed.'];
+          }
+          if (passed) break;
+          appState.variations[index].qc.attempts = attempt;
+          if (attempt === 3) throw new Error('Variation ' + (index + 1) + ' failed QC after 3 automatic repairs. Report: ' + JSON.stringify(appState.variations[index].qc));
+        }
+      }
+      return true;
+    }
+
+    getCampaignInputData = function() {
+      return {
+        nlInstructions: document.getElementById('nlInstructions').value.trim(),
+        campaignName: document.getElementById('campaignName').value.trim(),
+        campaignObjective: document.getElementById('campaignObjective').value,
+        productName: document.getElementById('productName').value.trim(),
+        productCategory: document.getElementById('productCategory').value,
+        campaignCategory: document.getElementById('campaignCategory').value,
+        campaignSubcategory: document.getElementById('campaignSubcategory').value,
+        adPlatform: 'Instagram Feed / Meta Ads',
+        targetAudience: document.getElementById('targetAudience').value.trim(),
+        sellingPrice: document.getElementById('sellingPrice').value.trim(),
+        discountInfo: document.getElementById('discountInfo').value.trim(),
+        campaignDuration: document.getElementById('campaignDuration').value.trim(),
+        promotionDetails: document.getElementById('promotionDetails').value.trim(),
+        ctaPreference: document.getElementById('ctaPreference').value,
+        campaignMessage: document.getElementById('campaignMessage').value.trim(),
+        campaignDescription: document.getElementById('campaignDescription').value.trim(),
+        variationCount: 3, isAutoPlacement: true,
+        selectedPlacements: [{ ratio: '4:5', name: 'Instagram Feed' }]
+      };
+    };
+
+    runOneClickWorkflow = async function() {
+      if (appState.isGenerating) return;
+      hideNotification();
+      const input = getCampaignInputData();
+      if (!input.productName && !input.nlInstructions && !input.campaignMessage) {
+        showNotification('error', 'Creative brief required', 'Enter a product, campaign message, or natural-language brief.');
+        return;
+      }
+      const requiresCategoryReview = input.campaignCategory === 'Auto' || !input.campaignSubcategory;
+      appState.isGenerating = true;
+      appState.manualRevisionCount = 0;
+      appState.variationBatches = [];
+      appState.selectedVariationIndex = null;
+      const button = document.getElementById('btnOneClickGenerate');
+      button.disabled = true;
+      document.getElementById('labelGenerate').textContent = 'Generating...';
+      try {
+        updatePipelineProgress(1, 4, 'Matching the requested product against products.csv...');
+        appState.productVerification = await verifyAppleMalaysiaProduct(input);
+        updatePipelineProgress(2, 4, 'Selecting category, subcategory and creative direction...');
+        const result = await generateBriefAndStrategy(input, appState.productVerification);
+        appState.campaignBrief = result.brief;
+        appState.creativeStrategy = result.strategy;
+        if (input.campaignCategory !== 'Auto' && appState.campaignBrief.selectedCategory !== input.campaignCategory) throw new Error('AI category does not match the user-selected category.');
+        if (input.campaignSubcategory && appState.campaignBrief.selectedSubcategory !== input.campaignSubcategory) throw new Error('AI subcategory does not match the user-selected subcategory.');
+        if (requiresCategoryReview) {
+          const categorySelect = document.getElementById('campaignCategory');
+          const subcategorySelect = document.getElementById('campaignSubcategory');
+          categorySelect.value = appState.campaignBrief.selectedCategory;
+          const guide = await loadCategoryGuide();
+          const guideLines = guide.split(/\\r?\\n/);
+          let activeCategory = null;
+          const subcategoryNames = [];
+          for (const line of guideLines) {
+            const heading = line.match(/^## \\d+\\.\\s+(.+)$/);
+            if (heading) activeCategory = heading[1].trim();
+            else if (activeCategory === appState.campaignBrief.selectedCategory && line.startsWith('|')) {
+              const cells = line.split('|').map(value => value.trim());
+              const name = cells[1];
+              if (name && name !== 'Subcategory Name' && !/^[-:]+$/.test(name)) subcategoryNames.push(name);
+            }
+          }
+          subcategorySelect.innerHTML = '<option value="">Auto — AI selects subcategory</option>';
+          subcategoryNames.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            subcategorySelect.appendChild(option);
+          });
+          subcategorySelect.value = appState.campaignBrief.selectedSubcategory;
+          showNotification('success', 'AI category selection ready', 'AI selected ' + appState.campaignBrief.selectedCategory + ' / ' + appState.campaignBrief.selectedSubcategory + '. Review or change the selection, then click Generate Campaign again to create the three variations.');
+          return;
+        }
+        updatePipelineProgress(3, 4, 'Generating exactly three composition-led English variations...');
+        appState.variations = await generateCreativeVariations(input, appState.productVerification, appState.campaignBrief, appState.creativeStrategy);
+        appState.activeVariationIndex = 0;
+        appState.variationBatches.push({ createdAt: new Date().toISOString(), variations: appState.variations.map(v => ({ ...v })) });
+        renderStrategySection();
+        renderStudioSection();
+        switchTab('studio');
+        await generateAndValidateAllVariations();
+        renderStudioSection();
+        showNotification('success', 'Three variations passed QC', 'Review the three previews and select one variation for finalization. The original logo is required for final export.');
+      } catch (error) {
+        console.error(error);
+        renderStudioSection();
+        showNotification('error', 'Generation stopped', error.message || 'The generation workflow failed.');
+      } finally {
+        appState.isGenerating = false;
+        button.disabled = false;
+        document.getElementById('labelGenerate').textContent = 'Generate Campaign';
+        hidePipelineProgress();
+        const status = document.getElementById('manualRevisionStatus');
+        if (status) status.textContent = 'Manual revisions: ' + appState.manualRevisionCount + ' / 3';
+      }
+    };
+
+    const originalGenerateImageForVariation = generateImageForVariation;
+    generateImageForVariation = async function(index) {
+      const variation = appState.variations[index];
+      if (variation) variation.aspectRatio = '4:5';
+      await originalGenerateImageForVariation(index);
+    };
+
+    renderCompositeCanvas = async function(options = {}) {
+      const variation = appState.variations[appState.activeVariationIndex];
+      if (!variation) return;
+      variation.aspectRatio = '4:5';
+      const canvas = document.getElementById('compositeAdCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1080;
+      canvas.height = 1350;
+      const dark = document.getElementById('overlayTheme').value === 'dark-gradient';
+      ctx.fillStyle = dark ? '#1D1D1F' : '#F5F5F7';
+      ctx.fillRect(0, 0, 1080, 1350);
+
+      if (variation.generatedImageUrl) {
+        const image = new Image();
+        image.src = variation.generatedImageUrl;
+        await new Promise((resolve, reject) => {
+          if (image.complete && image.naturalWidth) return resolve();
+          image.onload = resolve;
+          image.onerror = () => reject(new Error('Generated image could not be loaded for composition.'));
+        });
+        const scale = Math.max(1080 / image.width, 1350 / image.height);
+        const width = image.width * scale, height = image.height * scale;
+        ctx.drawImage(image, (1080 - width) / 2, (1350 - height) / 2, width, height);
+      } else {
+        ctx.fillStyle = dark ? '#1D1D1F' : '#F5F5F7';
+        ctx.fillRect(0, 0, 1080, 1350);
+        ctx.fillStyle = dark ? '#FFFFFF' : '#1D1D1F';
+        ctx.font = '500 28px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Generated image is not available.', 540, 650);
+      }
+
+      const gradient = ctx.createLinearGradient(0, 650, 0, 1350);
+      gradient.addColorStop(0, 'rgba(0,0,0,0)');
+      gradient.addColorStop(1, dark ? 'rgba(0,0,0,0.82)' : 'rgba(255,255,255,0.94)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 650, 1080, 700);
+
+      // The top-left logo area is always reserved. Placeholder is preview-only.
+      if (options.includePlaceholder !== false) {
+        ctx.fillStyle = dark ? '#24262B' : '#FFFFFF';
+        roundRect(ctx, 72, 72, 280, 78, 12);
+        ctx.fill();
+        ctx.strokeStyle = dark ? '#777B84' : '#B8BBC2';
+        ctx.setLineDash([8, 6]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = dark ? '#FFFFFF' : '#1D1D1F';
+        ctx.font = '700 19px Inter, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('LOGO PLACEHOLDER', 92, 105);
+        ctx.font = '500 13px Inter, sans-serif';
+        ctx.fillText('PREVIEW ONLY · NOT OFFICIAL', 92, 128);
+      }
+
+      const pad = 72;
+      let y = 1250;
+      ctx.textAlign = 'left';
+      if (variation.cta) {
+        ctx.font = '600 28px Inter, sans-serif';
+        const ctaWidth = ctx.measureText(variation.cta).width + 64;
+        ctx.fillStyle = '#0071E3';
+        roundRect(ctx, pad, y - 58, ctaWidth, 58, 29);
+        ctx.fill();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText(variation.cta, pad + 32, y - 20);
+        y -= 88;
+      }
+      if (variation.priceLabel === 'Estimated Price' && variation.promoPrice) {
+        ctx.font = '700 24px Inter, sans-serif';
+        ctx.fillStyle = dark ? '#FFFFFF' : '#1D1D1F';
+        ctx.fillText('Estimated Price · ' + variation.promoPrice, pad, y);
+        y -= 42;
+        ctx.font = '400 16px Inter, sans-serif';
+        ctx.fillText('Unverified estimate — not an official Apple Store Malaysia price.', pad, y);
+        y -= 34;
+      } else if (variation.promoPrice) {
+        ctx.font = '700 34px Inter, sans-serif';
+        ctx.fillStyle = dark ? '#FFFFFF' : '#0071E3';
+        ctx.fillText(variation.promoPrice, pad, y);
+        y -= 48;
+      }
+      if (variation.supportingText) {
+        ctx.font = '400 30px Inter, sans-serif';
+        ctx.fillStyle = dark ? 'rgba(255,255,255,0.9)' : '#424245';
+        const supportLines = wrapCanvasText(ctx, variation.supportingText, 936);
+        for (let i = supportLines.length - 1; i >= 0; i--) { ctx.fillText(supportLines[i], pad, y); y -= 40; }
+        y -= 8;
+      }
+      if (variation.headline) {
+        ctx.font = '700 58px Inter, sans-serif';
+        ctx.fillStyle = dark ? '#FFFFFF' : '#1D1D1F';
+        const headlineLines = wrapCanvasText(ctx, variation.headline, 936);
+        for (let i = headlineLines.length - 1; i >= 0; i--) { ctx.fillText(headlineLines[i], pad, y); y -= 66; }
+        y -= 8;
+      }
+      if (variation.overlayProductName) {
+        ctx.font = '600 25px Inter, sans-serif';
+        ctx.fillStyle = dark ? '#93C5FD' : '#0071E3';
+        ctx.fillText(variation.overlayProductName, pad, y);
+      }
+    };
+
+    changeVariationAspectRatio = function() {
+      const variation = appState.variations[appState.activeVariationIndex];
+      if (variation) variation.aspectRatio = '4:5';
+      renderCompositeCanvas();
+    };
+
+    regenerateCurrentVariation = async function() {
+      const index = appState.activeVariationIndex;
+      const current = appState.variations[index];
+      if (!current) return;
+      if (appState.manualRevisionCount >= 3) {
+        showNotification('error', 'Revision limit reached', 'The manual revision limit is 3 requests.');
+        return;
+      }
+      appState.manualRevisionCount++;
+      const status = document.getElementById('manualRevisionStatus');
+      if (status) status.textContent = 'Manual revisions: ' + appState.manualRevisionCount + ' / 3';
+      try {
+        const prompt = 'Revise only this selected variation. Preserve exact category, subcategory, concept, factual product details, price facts and qualifiers, and brand facts. All copy remains English. Main visual change is composition only.\nCURRENT: '
+          + JSON.stringify(current) + '\nPRODUCT FACTS: ' + JSON.stringify(appState.productVerification)
+          + '\nReturn one JSON object with creativeAngle, creativeConcept, headline, supportingText, overlayProductName, promoPrice, originalPrice, priceLabel, priceNote, cta, primaryText, description, imagePrompt.';
+        const response = await callGeminiWithBackoff('gemini-3-flash-preview', {
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: 'application/json' }
+        });
+        const raw = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!raw) throw new Error('No revised variation returned.');
+        Object.assign(current, JSON.parse(raw), { generatedImageUrl: null, imageGenerationError: null, qc: { status: 'Pending', attempts: 0, issues: [] }, aspectRatio: '4:5' });
+        await originalGenerateImageForVariation(index);
+        if (current.generatedImageUrl && await runVariationQC(index)) {
+          renderStudioSection();
+          showNotification('success', 'Variation revised', 'The selected variation passed QC.');
+        } else {
+          renderStudioSection();
+          showNotification('error', 'Revision did not pass QC', JSON.stringify(current.qc));
+        }
+      } catch (error) {
+        showNotification('error', 'Revision failed', error.message);
+      }
+    };
+
+    regenerateAllVariations = async function() {
+      if (appState.manualRevisionCount >= 3) {
+        showNotification('error', 'Revision limit reached', 'The manual revision limit is 3 requests.');
+        return;
+      }
+      appState.manualRevisionCount++;
+      const status = document.getElementById('manualRevisionStatus');
+      if (status) status.textContent = 'Manual revisions: ' + appState.manualRevisionCount + ' / 3';
+      try {
+        const oldBatch = { createdAt: new Date().toISOString(), variations: appState.variations.map(v => ({ ...v })) };
+        const input = getCampaignInputData();
+        const newBatch = await generateCreativeVariations(input, appState.productVerification, appState.campaignBrief, appState.creativeStrategy);
+        appState.variationBatches.push(oldBatch);
+        appState.variations = newBatch;
+        appState.activeVariationIndex = 0;
+        appState.selectedVariationIndex = null;
+        renderStudioSection();
+        await generateAndValidateAllVariations();
+        renderStudioSection();
+        showNotification('success', 'New batch ready', 'The previous variation batch remains retained in this session.');
+      } catch (error) {
+        showNotification('error', 'Regeneration stopped', error.message);
+        renderStudioSection();
+      }
+    };
+
+    async function loadOriginalTransparentPngLogo() {
+      const url = getConfiguredLogoUrl();
+      if (!url) throw new Error('Original logo URL is not configured. Set window.APP_CONFIG.logoUrl before finalization.');
+      const response = await fetch(url, { mode: 'cors', cache: 'no-store' });
+      if (!response.ok) throw new Error('Original logo URL is not accessible (HTTP ' + response.status + ').');
+      const blob = await response.blob();
+      if (blob.type !== 'image/png') throw new Error('Original logo must be a transparent PNG.');
+      const signature = new Uint8Array(await blob.slice(0, 8).arrayBuffer());
+      const expected = [137,80,78,71,13,10,26,10];
+      if (!expected.every((value, index) => signature[index] === value)) throw new Error('The configured logo is not a valid PNG file.');
+      const bitmap = await createImageBitmap(blob);
+      const canvas = document.createElement('canvas');
+      canvas.width = bitmap.width; canvas.height = bitmap.height;
+      const context = canvas.getContext('2d', { willReadFrequently: true });
+      context.drawImage(bitmap, 0, 0);
+      const pixels = context.getImageData(0, 0, bitmap.width, bitmap.height).data;
+      let transparent = false;
+      for (let i = 3; i < pixels.length; i += 4) if (pixels[i] < 255) { transparent = true; break; }
+      if (!transparent) throw new Error('The PNG logo has no transparent pixels.');
+      return bitmap;
+    }
+
+    finalizeSelectedVariation = async function() {
+      const index = appState.activeVariationIndex;
+      const variation = appState.variations[index];
+      if (!variation || variation.qc?.status !== 'Passed' || !variation.generatedImageUrl) {
+        showNotification('error', 'Finalization blocked', 'Select a generated variation that has passed AI QC.');
+        return;
+      }
+      try {
+        const layout = window.APP_CONFIG?.logoLayout;
+        if (!layout || !Number.isFinite(layout.x) || !Number.isFinite(layout.y) || !Number.isFinite(layout.maxWidth) || !Number.isFinite(layout.maxHeight)) {
+          throw new Error('Logo size and margin are awaiting the GAP-44 decision. Final export remains blocked until the logo layout is configured.');
+        }
+        const logo = await loadOriginalTransparentPngLogo();
+        await renderCompositeCanvas({ includePlaceholder: false });
+        const preview = document.getElementById('compositeAdCanvas');
+        const finalCanvas = document.createElement('canvas');
+        finalCanvas.width = 1080; finalCanvas.height = 1350;
+        const context = finalCanvas.getContext('2d');
+        context.drawImage(preview, 0, 0, 1080, 1350);
+        const scale = Math.min(layout.maxWidth / logo.width, layout.maxHeight / logo.height);
+        context.drawImage(logo, layout.x, layout.y, logo.width * scale, logo.height * scale);
+        appState.finalCanvas = finalCanvas;
+        const png = await new Promise(resolve => finalCanvas.toBlob(resolve, 'image/png'));
+        const jpeg = await new Promise(resolve => finalCanvas.toBlob(resolve, 'image/jpeg'));
+        if (!png || !jpeg) throw new Error('Browser could not encode PNG and JPEG.');
+        triggerDownload(png, 'apple-store-malaysia-instagram-feed.png');
+        triggerDownload(jpeg, 'apple-store-malaysia-instagram-feed.jpg');
+        showNotification('success', 'Final image exported', 'PNG and JPEG exported at 1080 × 1350 px with the original logo.');
+      } catch (error) {
+        showNotification('error', 'Finalization blocked', error.message);
+      }
+    };
+
+    downloadActiveComposite = function() {
+      showNotification('warning', 'Preview only', 'Final export requires the original transparent PNG logo and a variation that has passed AI QC. Use Select & Finalize.');
+    };
+
+    initializeCategorySelectors();
+
   </script>
 </body>
 </html>
