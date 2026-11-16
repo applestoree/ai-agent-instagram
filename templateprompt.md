@@ -1,0 +1,10 @@
+[Subject]
++ [Action/Pose]
++ [Background]
++ [Composition]
++ [Lighting]
++ [Art Style]
++ [Color Palette]
++ [Mood]
++ [Quality] 
++ [Aspect Ratio] 4:5
