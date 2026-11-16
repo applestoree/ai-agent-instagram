@@ -2391,9 +2391,24 @@ ${v.imagePrompt}
       if (!raw) throw new Error('Gemini did not return creative variations.');
       const parsed = JSON.parse(raw);
       if (!Array.isArray(parsed) || parsed.length !== 3) throw new Error('The AI must return exactly three variations.');
+      const catalogPrice = productInfo.catalogPriceMYR;
+      const estimatedPrice = productInfo.estimatedPriceMYR;
+      const priceValue = catalogPrice !== null && catalogPrice !== undefined
+        ? 'RM ' + Number(catalogPrice).toLocaleString('en-MY')
+        : estimatedPrice !== null && estimatedPrice !== undefined
+          ? 'RM ' + Number(estimatedPrice).toLocaleString('en-MY')
+          : '';
       return parsed.map((variation, index) => ({
-        ...variation, variationNumber: index + 1, aspectRatio: '4:5',
-        generatedImageUrl: null, imageGenerationError: null,
+        ...variation,
+        variationNumber: index + 1,
+        aspectRatio: '4:5',
+        promoPrice: variation.promoPrice || priceValue,
+        priceLabel: estimatedPrice !== null && estimatedPrice !== undefined && (catalogPrice === null || catalogPrice === undefined) ? 'Estimated Price' : (variation.priceLabel || ''),
+        priceNote: estimatedPrice !== null && estimatedPrice !== undefined && (catalogPrice === null || catalogPrice === undefined)
+          ? 'Unverified estimate — not an official Apple Store Malaysia price.'
+          : (variation.priceNote || ''),
+        generatedImageUrl: null,
+        imageGenerationError: null,
         qc: { status: 'Pending', attempts: 0, issues: [] }
       }));
     };
@@ -2418,10 +2433,24 @@ ${v.imagePrompt}
       if (!raw) throw new Error('AI QC returned no report.');
       const report = JSON.parse(raw);
       variation.qc = {
-        ...report, status: report.passed ? 'Passed' : 'Failed',
+        ...report,
+        productAccuracy: report.checks?.productAccuracy || 'Uncertain',
+        brandConsistency: report.checks?.brand || 'Uncertain',
+        readability: report.checks?.readability || 'Uncertain',
+        textAccuracy: report.checks?.readability || 'Uncertain',
+        placementSuitability: report.checks?.format || 'Uncertain',
+        promotionalAccuracy: report.checks?.productAccuracy || 'Uncertain',
+        status: report.passed ? 'Passed' : 'Failed',
         attempts: variation.qc?.attempts || 0,
         issues: Array.isArray(report.issues) ? report.issues : []
       };
+      const badge = document.getElementById('qcOverallBadge');
+      if (badge) {
+        badge.textContent = variation.qc.status === 'Passed' ? 'QC Passed' : 'QC Failed';
+        badge.className = variation.qc.status === 'Passed'
+          ? 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700'
+          : 'px-2 py-0.5 rounded-full text-[11px] font-semibold bg-red-50 text-red-700';
+      }
       return Boolean(report.passed);
     }
 
@@ -2544,13 +2573,108 @@ ${v.imagePrompt}
       await originalGenerateImageForVariation(index);
     };
 
-    renderCompositeCanvas = (function(originalRender) {
-      return function() {
-        const variation = appState.variations[appState.activeVariationIndex];
-        if (variation) variation.aspectRatio = '4:5';
-        originalRender();
-      };
-    })(renderCompositeCanvas);
+    renderCompositeCanvas = async function(options = {}) {
+      const variation = appState.variations[appState.activeVariationIndex];
+      if (!variation) return;
+      variation.aspectRatio = '4:5';
+      const canvas = document.getElementById('compositeAdCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1080;
+      canvas.height = 1350;
+      const dark = document.getElementById('overlayTheme').value === 'dark-gradient';
+      ctx.fillStyle = dark ? '#1D1D1F' : '#F5F5F7';
+      ctx.fillRect(0, 0, 1080, 1350);
+
+      if (variation.generatedImageUrl) {
+        const image = new Image();
+        image.src = variation.generatedImageUrl;
+        await new Promise((resolve, reject) => {
+          if (image.complete && image.naturalWidth) return resolve();
+          image.onload = resolve;
+          image.onerror = () => reject(new Error('Generated image could not be loaded for composition.'));
+        });
+        const scale = Math.max(1080 / image.width, 1350 / image.height);
+        const width = image.width * scale, height = image.height * scale;
+        ctx.drawImage(image, (1080 - width) / 2, (1350 - height) / 2, width, height);
+      } else {
+        ctx.fillStyle = dark ? '#1D1D1F' : '#F5F5F7';
+        ctx.fillRect(0, 0, 1080, 1350);
+        ctx.fillStyle = dark ? '#FFFFFF' : '#1D1D1F';
+        ctx.font = '500 28px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Generated image is not available.', 540, 650);
+      }
+
+      const gradient = ctx.createLinearGradient(0, 650, 0, 1350);
+      gradient.addColorStop(0, 'rgba(0,0,0,0)');
+      gradient.addColorStop(1, dark ? 'rgba(0,0,0,0.82)' : 'rgba(255,255,255,0.94)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 650, 1080, 700);
+
+      // The top-left logo area is always reserved. Placeholder is preview-only.
+      if (options.includePlaceholder !== false) {
+        ctx.fillStyle = dark ? '#24262B' : '#FFFFFF';
+        roundRect(ctx, 72, 72, 280, 78, 12);
+        ctx.fill();
+        ctx.strokeStyle = dark ? '#777B84' : '#B8BBC2';
+        ctx.setLineDash([8, 6]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = dark ? '#FFFFFF' : '#1D1D1F';
+        ctx.font = '700 19px Inter, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('LOGO PLACEHOLDER', 92, 105);
+        ctx.font = '500 13px Inter, sans-serif';
+        ctx.fillText('PREVIEW ONLY · NOT OFFICIAL', 92, 128);
+      }
+
+      const pad = 72;
+      let y = 1250;
+      ctx.textAlign = 'left';
+      if (variation.cta) {
+        ctx.font = '600 28px Inter, sans-serif';
+        const ctaWidth = ctx.measureText(variation.cta).width + 64;
+        ctx.fillStyle = '#0071E3';
+        roundRect(ctx, pad, y - 58, ctaWidth, 58, 29);
+        ctx.fill();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText(variation.cta, pad + 32, y - 20);
+        y -= 88;
+      }
+      if (variation.priceLabel === 'Estimated Price' && variation.promoPrice) {
+        ctx.font = '700 24px Inter, sans-serif';
+        ctx.fillStyle = dark ? '#FFFFFF' : '#1D1D1F';
+        ctx.fillText('Estimated Price · ' + variation.promoPrice, pad, y);
+        y -= 42;
+        ctx.font = '400 16px Inter, sans-serif';
+        ctx.fillText('Unverified estimate — not an official Apple Store Malaysia price.', pad, y);
+        y -= 34;
+      } else if (variation.promoPrice) {
+        ctx.font = '700 34px Inter, sans-serif';
+        ctx.fillStyle = dark ? '#FFFFFF' : '#0071E3';
+        ctx.fillText(variation.promoPrice, pad, y);
+        y -= 48;
+      }
+      if (variation.supportingText) {
+        ctx.font = '400 30px Inter, sans-serif';
+        ctx.fillStyle = dark ? 'rgba(255,255,255,0.9)' : '#424245';
+        const supportLines = wrapCanvasText(ctx, variation.supportingText, 936);
+        for (let i = supportLines.length - 1; i >= 0; i--) { ctx.fillText(supportLines[i], pad, y); y -= 40; }
+        y -= 8;
+      }
+      if (variation.headline) {
+        ctx.font = '700 58px Inter, sans-serif';
+        ctx.fillStyle = dark ? '#FFFFFF' : '#1D1D1F';
+        const headlineLines = wrapCanvasText(ctx, variation.headline, 936);
+        for (let i = headlineLines.length - 1; i >= 0; i--) { ctx.fillText(headlineLines[i], pad, y); y -= 66; }
+        y -= 8;
+      }
+      if (variation.overlayProductName) {
+        ctx.font = '600 25px Inter, sans-serif';
+        ctx.fillStyle = dark ? '#93C5FD' : '#0071E3';
+        ctx.fillText(variation.overlayProductName, pad, y);
+      }
+    };
 
     changeVariationAspectRatio = function() {
       const variation = appState.variations[appState.activeVariationIndex];
@@ -2649,21 +2773,22 @@ ${v.imagePrompt}
         return;
       }
       try {
+        const layout = window.APP_CONFIG?.logoLayout;
+        if (!layout || !Number.isFinite(layout.x) || !Number.isFinite(layout.y) || !Number.isFinite(layout.maxWidth) || !Number.isFinite(layout.maxHeight)) {
+          throw new Error('Logo size and margin are awaiting the GAP-44 decision. Final export remains blocked until the logo layout is configured.');
+        }
         const logo = await loadOriginalTransparentPngLogo();
-        renderCompositeCanvas();
-        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        await renderCompositeCanvas({ includePlaceholder: false });
         const preview = document.getElementById('compositeAdCanvas');
         const finalCanvas = document.createElement('canvas');
         finalCanvas.width = 1080; finalCanvas.height = 1350;
         const context = finalCanvas.getContext('2d');
         context.drawImage(preview, 0, 0, 1080, 1350);
-        context.fillStyle = document.getElementById('overlayTheme').value === 'dark-gradient' ? '#1D1D1F' : '#F5F5F7';
-        context.fillRect(60, 58, 270, 100);
-        const scale = Math.min(220 / logo.width, 72 / logo.height);
-        context.drawImage(logo, 72, 72, logo.width * scale, logo.height * scale);
+        const scale = Math.min(layout.maxWidth / logo.width, layout.maxHeight / logo.height);
+        context.drawImage(logo, layout.x, layout.y, logo.width * scale, logo.height * scale);
         appState.finalCanvas = finalCanvas;
         const png = await new Promise(resolve => finalCanvas.toBlob(resolve, 'image/png'));
-        const jpeg = await new Promise(resolve => finalCanvas.toBlob(resolve, 'image/jpeg', 0.92));
+        const jpeg = await new Promise(resolve => finalCanvas.toBlob(resolve, 'image/jpeg'));
         if (!png || !jpeg) throw new Error('Browser could not encode PNG and JPEG.');
         triggerDownload(png, 'apple-store-malaysia-instagram-feed.png');
         triggerDownload(jpeg, 'apple-store-malaysia-instagram-feed.jpg');
