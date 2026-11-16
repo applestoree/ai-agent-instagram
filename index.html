@@ -211,7 +211,7 @@
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-apple-text mb-1.5">Produk Apple (Product) <span class="text-red-500">*</span></label>
+                <label class="block text-xs font-medium text-apple-text mb-1.5">Apple product (optional — AI may select from products.csv)</label>
                 <input id="productName" type="text" placeholder="Contoh: iPhone 16 Pro Max, MacBook Air M3, AirPods Pro 2"
                   class="w-full rounded-xl border border-apple-border px-3.5 py-2.5 text-sm focus:border-apple-blue focus:outline-none" />
               </div>
@@ -267,7 +267,7 @@
             <div class="bg-[#F5F5F7] rounded-2xl p-4 space-y-3 border border-apple-border/60">
               <div class="flex items-center justify-between">
                 <span class="text-xs font-semibold text-apple-text">Butiran Promosi & Harga Sah (Pilihan)</span>
-                <span class="text-[11px] text-apple-muted">AI dilarang mencipta harga atau diskaun palsu</span>
+                <span class="text-[11px] text-apple-muted">Check products.csv first; estimates must be clearly labeled and unverified.</span>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
@@ -330,7 +330,7 @@
             <div>
               <h2 class="text-base font-semibold text-apple-text">Pengurusan Imej Rujukan</h2>
               <p class="text-xs text-apple-muted mt-0.5">
-                Muat naik logo rasmi Apple Store Malaysia atau imej produk. AI akan menganalisis tujuan imej secara automatik.
+                Upload optional product or visual references. The original brand logo is loaded from the configured transparent PNG URL at finalization.
               </p>
             </div>
 
@@ -339,7 +339,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
               </svg>
               <span class="text-xs font-medium text-apple-text">Klik untuk muat naik imej rujukan</span>
-              <span class="text-[11px] text-apple-muted mt-0.5">PNG, JPG, WEBP (Logo, Produk, Gaya Hidup)</span>
+              <span class="text-[11px] text-apple-muted mt-0.5">PNG, JPG, WEBP (product and visual references only)</span>
               <input id="referenceImageInput" type="file" accept="image/png,image/jpeg,image/webp" multiple class="hidden" onchange="handleReferenceUpload(event)" />
             </label>
 
@@ -351,7 +351,7 @@
             </div>
 
             <div class="p-3 rounded-xl bg-amber-50 border border-amber-200/80 text-[11px] text-amber-900 leading-relaxed">
-              <strong>Polisi Logo Rasmi:</strong> Logo Apple Store Malaysia yang dimuat naik akan dikekalkan nisbah asal tanpa ubah suai dan diletakkan sebagai lapisan tindanan berasingan di bucu kiri atas secara lalai.
+              <strong>Original Logo Policy:</strong> Finalization requires the configured original transparent PNG URL. Uploaded reference files are not accepted as the final logo. The logo is composited separately at the fixed top-left position.
             </div>
           </div>
 
