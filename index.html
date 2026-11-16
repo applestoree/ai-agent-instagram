@@ -359,8 +359,8 @@
           <div class="bg-white rounded-3xl border border-apple-border/70 p-6 shadow-sm space-y-4">
             <div class="flex items-center justify-between">
               <div>
-                <h2 class="text-base font-semibold text-apple-text">Penempatan Iklan (Placements)</h2>
-                <p class="text-xs text-apple-muted">Mod Hibrid: AI mengesyorkan atau pilih secara manual.</p>
+                <h2 class="text-base font-semibold text-apple-text">Instagram Feed Output</h2>
+                <p class="text-xs text-apple-muted">Fixed output: portrait 4:5 · 1080 × 1350 px.</p>
               </div>
               <label class="inline-flex items-center gap-1.5 text-xs font-medium text-apple-blue cursor-pointer">
                 <input id="autoPlacementToggle" type="checkbox" checked class="rounded text-apple-blue focus:ring-apple-blue" onchange="togglePlacementMode()" />
@@ -368,7 +368,7 @@
               </label>
             </div>
 
-            <div id="placementCheckboxes" class="grid grid-cols-2 gap-2.5">
+            <div id="placementCheckboxes" class="hidden">
               <label class="flex items-center gap-2.5 p-3 rounded-2xl border border-apple-border bg-[#F5F5F7]/40 cursor-pointer hover:bg-[#F5F5F7]">
                 <input type="checkbox" value="4:5" data-name="Feed (4:5)" checked class="placement-cb rounded text-apple-blue" />
                 <div>
@@ -2396,7 +2396,7 @@ ${v.imagePrompt}
         + '\nThe selected category and subcategory must be included in JSON. If productInfo.productNotFound is true, do not display a product or substitute another model.'
         + '\n\nPRICE RULES:\nUse products.csv catalogPriceMYR first. If unavailable, use estimatedPriceMYR only when provided. All prices are MYR (RM). Any estimate must be labeled exactly "Estimated Price" and include a clear note that it is unverified. Never represent an estimate as an official Apple Store Malaysia price.'
         + '\n\nBRAND AND FORMAT RULES:\nPremium, minimal, professional Apple-inspired visual direction; Apple Store Malaysia context; no unsupported official Apple claims. Instagram Feed portrait 4:5, 1080 × 1350 px. Reserve a fixed top-left logo safe area. No logo inside the generated base image. CTA is optional and AI-selected based on category and objective. Determine product count and text density based on the concept.'
-        + '\n\nReturn valid JSON only with this shape:\n{"brief":{"campaignOverview":"English summary","selectedCategory":"exact category name","selectedSubcategory":"exact subcategory name","selectionReason":"reason","campaignObjective":"objective","productOverview":"verified product summary or product-free concept","targetAudience":"audience","audiencePainPoints":"audience need","campaignMessage":"key message","valueProposition":"value","keySellingPoints":"verified points only","campaignAngle":"angle","marketingDirection":"direction","suggestedCta":"CTA or empty string","priceDisplay":"catalog price, estimated price with note, or omit"},"strategy":{"coreCreativeConcept":"one consistent concept shared by all variations","mainMessage":"message","visualTheme":"theme","creativeDirection":"direction","emotionalAppeal":"appeal","productPresentation":"presentation","composition":"base composition approach","lighting":"lighting","background":"background","colorDirection":"palette","typographyDirection":"separate overlay typography direction","visualObjective":"objective","mainSubject":"subject","productRelevance":"relevance","recommendedFormatRatio":"4:5"}}';
+        + '\n\nReturn valid JSON only with this shape:\n{"brief":{"campaignOverview":"English summary","selectedCategory":"exact category name","selectedSubcategory":"exact subcategory name","selectionReason":"reason","campaignObjective":"objective","productOverview":"verified product summary or product-free concept","targetAudience":"audience","audiencePainPoints":"audience need","campaignMessage":"key message","valueProposition":"value","keySellingPoints":"verified points only","campaignAngle":"angle","marketingDirection":"direction","suggestedCta":"CTA or empty string","priceDisplay":"catalog price, estimated price with note, or omit","placementRecommendation":"Instagram Feed portrait 4:5, 1080 × 1350 px"},"strategy":{"coreCreativeConcept":"one consistent concept shared by all variations","mainMessage":"message","visualTheme":"theme","creativeDirection":"direction","emotionalAppeal":"appeal","productPresentation":"presentation","composition":"base composition approach","lighting":"lighting","background":"background","colorDirection":"palette","typographyDirection":"separate overlay typography direction","visualObjective":"objective","mainSubject":"subject","productRelevance":"relevance","recommendedFormatRatio":"4:5"}}';
       const response = await callGeminiWithBackoff('gemini-3-flash-preview', {
         contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
         systemInstruction: { parts: [{ text: systemPrompt }] },
@@ -2406,6 +2406,8 @@ ${v.imagePrompt}
       if (!raw) throw new Error('Gemini did not return a campaign brief.');
       const result = JSON.parse(raw);
       if (!CATEGORY_NAMES.includes(result.brief?.selectedCategory)) throw new Error('AI selected a category outside the approved four categories.');
+      result.brief.selectedCategoryAndReason = result.brief.selectedCategory + ' / ' + result.brief.selectedSubcategory + ' — ' + (result.brief.selectionReason || 'AI selected based on the content objective.');
+      result.brief.placementRecommendation = 'Instagram Feed portrait 4:5 — 1080 × 1350 px.';
       const guideLines = guide.split(/\r?\n/);
       let activeCategory = null;
       const allowedSubcategories = [];
