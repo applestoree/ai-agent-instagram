@@ -1,77 +1,131 @@
-# Content Categories
+# Instagram Feed Content Categories
+
+**Project:** Apple Store Malaysia — AI Agent Instagram Feed / Meta Ads  
+**Version:** Requirement v1 (GAP-01–GAP-41)  
+**Purpose:** Source of truth for the four content categories, 56 subcategories, and the 14 required attributes per subcategory.
+
+## Global rules
+
+- Preserve all four category names and all 56 subcategory names exactly as listed below.
+- Do not delete, merge, or rename categories or subcategories.
+- Each subcategory has all 14 attributes: Category Name, Subcategory Name, Content Objective, Target Audience, Content Direction, Visual Objective, Main Subject, Product Relevance, Visual Direction, Composition Direction, Lighting Direction, Text Direction, CTA Direction, Brand Direction.
+- All visible creative text must be in English.
+- The visual style must remain premium, minimal, professional, and consistent with Apple Store Malaysia context.
+- Product selection and factual product details must come from `products.csv`. Never invent product specifications.
+- If a requested product is not found in `products.csv`, create a relevant concept without showing a product.
+- AI determines whether CTA, price, supporting text, and other optional copy are needed.
+- Feed output is portrait 4:5 at 1080 × 1350 px.
+- Logo position is fixed at top-left. The temporary placeholder is preview-only; finalization requires the configured original transparent PNG logo.
+- Price lookup order: `products.csv` first, then an AI internal-knowledge estimate when unavailable. Use MYR (RM), the exact label `Estimated Price`, and a note that the estimate is unverified.
+- Each generation creates three variations. The primary visual difference is composition; AI may adapt creative text per variation while preserving factual consistency.
 
 ## 1. Product Showcase
 
-Fokus: menampilkan produk Apple, desain, fitur, dan pengalaman penggunaan.
+**Category Name:** Product Showcase  
+**Category Objective:** Present Apple products, design, features, and real-world product experience in a visually compelling way.
 
-- iPhone Spotlight
-- MacBook Features
-- iPad Showcase
-- Apple Watch
-- AirPods & Accessories
-- Apple Ecosystem
-- Product Design & Details
-- Product Color Showcase
-- Product in Real Life
-- Product Photography
-- Product Lineup
-- Product Accessories
-- Apple Product Collection
+| Subcategory Name | Content Objective | Target Audience | Content Direction | Visual Objective | Main Subject | Product Relevance | Visual Direction | Composition Direction | Lighting Direction | Text Direction | CTA Direction | Brand Direction |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| iPhone Spotlight | Make one iPhone model the hero and communicate its strongest verified appeal. | iPhone shoppers and Apple enthusiasts. | Hero-led model introduction with verified differentiators. | Establish immediate product recognition and desire. | Selected iPhone model. | Exact model identity, finish, features, and CSV visual facts. | Premium hero photography with refined studio atmosphere. | Single dominant phone with generous negative space. | Controlled edge highlights and soft display reflections. | Short model-led headline and one key benefit. | Discover the iPhone or explore the model. | Minimal Apple-inspired product focus; no unsupported claims. |
+| MacBook Features | Highlight selected MacBook capabilities and design qualities. | Students, professionals, creators, and Mac buyers. | Feature-led storytelling grounded in product data. | Make the laptop's verified benefit visually understandable. | Selected MacBook model and one feature context. | Use only matching model details and verified capabilities. | Clean desktop or studio editorial photography. | Laptop as focal point with supporting feature space. | Soft directional studio light with subtle metal highlights. | One feature headline and concise explanation. | Explore MacBook or learn more. | Premium, precise, uncluttered hardware presentation. |
+| iPad Showcase | Present iPad design and use versatility. | Students, creators, professionals, and families. | Product showcase with a relevant use context. | Communicate the iPad's form and intended experience. | Selected iPad model. | Match display, camera, body, and compatible accessories only when verified. | Bright editorial studio or contextual lifestyle scene. | Tablet dominates with balanced contextual objects. | Soft daylight or controlled studio illumination. | Benefit-led headline with minimal supporting copy. | Discover iPad or explore the lineup. | Calm, modern, product-first Apple aesthetic. |
+| Apple Watch | Showcase watch design, display, and verified capabilities. | Fitness-minded users, professionals, and smartwatch shoppers. | Product-led story around a selected watch benefit. | Make the watch face, case, and band clearly recognizable. | Selected Apple Watch model. | Exact case, band, sensor, and control details from product data. | Refined wrist-level product photography. | Watch as central focal point with uncluttered wrist framing. | Crisp reflections with balanced skin and material tones. | Short benefit headline; avoid unsupported health claims. | Explore Apple Watch. | Precise, premium, understated brand treatment. |
+| AirPods & Accessories | Present audio products or compatible accessories as desirable complements. | Apple users and accessory shoppers. | Accessory-focused showcase with verified compatibility. | Highlight form, finish, and practical role. | Selected AirPods or Apple accessory. | Use exact model and verified compatibility from CSV. | Minimal product still life or contextual use scene. | One hero accessory with controlled supporting space. | Soft specular highlights and clean shadow detail. | Concise product benefit and model name. | Explore accessories or discover compatibility. | Clean product photography; avoid implying unverified bundle inclusion. |
+| Apple Ecosystem | Explain how selected Apple devices work together. | Existing Apple users and prospective ecosystem buyers. | Connected-device experience based on supported capabilities. | Show a coherent multi-device workflow. | Relevant combination of Apple devices. | Every displayed device must be present and factually supported. | Bright, connected lifestyle editorial. | Devices arranged as a clear visual sequence, not a cluttered collage. | Natural light with consistent device highlights. | One ecosystem message and concise supporting line. | Explore the Apple ecosystem. | Cohesive, restrained, accurate device representation. |
+| Product Design & Details | Draw attention to verified construction and design details. | Design-conscious buyers and product researchers. | Macro and detail-led product storytelling. | Reveal materials, contours, and construction accurately. | Verified product body and distinctive details. | Use only CSV-supported materials and visible features. | High-end macro product photography. | Detail crop paired with enough context to identify the model. | Raking light to reveal texture without exaggeration. | Detail-focused headline and factual descriptor. | Discover product details. | Precision, restraint, and no invented hardware features. |
+| Product Color Showcase | Present available verified finishes clearly. | Buyers comparing colors and finishes. | Color-led product presentation. | Make each verified finish distinguishable. | Same product model in available finishes. | Use only listed color variants from CSV. | Clean color study with accurate finish rendering. | Consistent product angle and scale across color options. | Neutral studio lighting for faithful color. | Model name plus verified finish names. | Explore available finishes. | Accurate color; no fabricated or renamed finishes. |
+| Product in Real Life | Connect a product to a believable everyday use case. | Lifestyle buyers and practical decision-makers. | Contextual storytelling around a real product benefit. | Show natural product use without losing product identity. | Selected Apple product in use. | Depict only plausible, supported capabilities. | Premium lifestyle photography. | Product remains clearly visible within an authentic scene. | Natural, soft environmental light. | Human benefit first, product detail second. | Discover how it fits your day. | Authentic, aspirational, never staged as an official Apple claim. |
+| Product Photography | Create a polished standalone product image. | Product shoppers and creative audiences. | Pure product photography without unnecessary narrative. | Maximize product recognition and visual quality. | Selected product model. | Exact silhouette, proportions, finish, and component layout. | Commercial studio product photography. | Strong hero framing with intentional negative space. | Controlled studio key, fill, and rim lighting. | Minimal or no copy beyond necessary identification. | Optional; use only when useful. | Product accuracy takes priority over dramatic styling. |
+| Product Lineup | Present a selection of related products or models. | Buyers comparing a product family. | Lineup overview using verified models. | Make the range and distinctions easy to scan. | Selected products in one product family. | Every model and variant must be found in CSV. | Consistent studio lineup photography. | Ordered arrangement with consistent scale and spacing. | Even, neutral lighting across all products. | Clear lineup title and concise model labels. | Explore the lineup. | Consistent scale, factual naming, no invented variants. |
+| Product Accessories | Show accessories that complement a selected device. | Existing owners and accessory shoppers. | Accessory and compatibility-led presentation. | Clarify the accessory's form and relationship to device. | Selected accessory and compatible device if verified. | Compatibility must be explicit in CSV. | Minimal product still life. | Accessory hero with device secondary where relevant. | Soft studio light and clean material detail. | Explain accessory purpose or compatibility. | Explore compatible accessories. | Never imply included-in-box status unless verified. |
+| Apple Product Collection | Create a curated collection of multiple Apple products. | Broad Apple audience and gift shoppers. | Curated collection with a clear organizing idea. | Convey breadth while keeping each product recognizable. | Selected collection of verified products. | Every product must exist in CSV. | Premium editorial collection photography. | Balanced group arrangement with clear hierarchy. | Consistent soft studio lighting. | Collection theme and short supporting line. | Explore the collection. | Restrained, coherent, accurate product family presentation. |
 
 ## 2. Product Education
 
-Fokus: memberikan informasi dan edukasi tentang produk Apple.
+**Category Name:** Product Education  
+**Category Objective:** Explain product information, features, and supported use in a clear and useful way.
 
-- Tips & Tricks
-- Hidden Features
-- iOS Updates
-- How-to Guides
-- Apple Ecosystem
-- Product Comparison
-- Feature Explainer
-- Technical Specifications
-- Beginner's Guide
-- iOS & Software Features
-- Apple Intelligence
-- Privacy & Security
-- Compatibility Guide
-- Battery & Performance
+| Subcategory Name | Content Objective | Target Audience | Content Direction | Visual Objective | Main Subject | Product Relevance | Visual Direction | Composition Direction | Lighting Direction | Text Direction | CTA Direction | Brand Direction |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Tips & Tricks | Teach a useful, actionable Apple-device tip. | Existing Apple users and beginners. | One practical tip with clear steps. | Make the action easy to understand at a glance. | Relevant device and interaction. | Use a product only when the tip applies to it. | Clean instructional editorial. | Device plus one focused action area. | Bright, even lighting for clarity. | Action-led headline and concise steps. | Try the tip or learn more. | Helpful, accurate, approachable, minimal. |
+| Hidden Features | Reveal a lesser-known, verified feature. | Curious existing users and power users. | Feature discovery with a simple explanation. | Create discovery while accurately representing the UI or device. | Device feature being explained. | Verify availability by product and software version where known. | Refined tech editorial with subtle reveal cues. | One focal feature with supporting annotation space. | Controlled highlights and readable contrast. | Curiosity-led headline plus factual explanation. | Discover the feature. | No fabricated interface or capability. |
+| iOS Updates | Explain a relevant iOS update or change. | iPhone users and software-aware audiences. | Update-focused explanation grounded in verified release information. | Make the update's user impact clear. | iPhone and relevant software interface. | Do not imply unsupported device compatibility. | Modern interface-led editorial. | UI detail paired with device context. | Clean, neutral light and crisp screen legibility. | Version-aware headline and concise benefit. | Learn more about the update. | Accurate software representation; avoid fake UI text. |
+| How-to Guides | Explain a task through clear steps. | New and intermediate Apple users. | Sequential, task-oriented instruction. | Make each step visually scannable. | Device and task interaction. | Match steps to verified device and OS capabilities. | Minimal instructional layout. | Numbered sequence with one clear device focal point. | Even, low-distraction lighting. | Short action verbs and numbered steps. | Follow the guide. | Clarity and factual accuracy over decoration. |
+| Apple Ecosystem | Educate how devices and services connect. | Existing owners and ecosystem-curious buyers. | Explain one supported cross-device workflow. | Clarify the relationship between devices. | Relevant devices and supported interaction. | Show only documented compatible workflows. | Connected workflow editorial. | Sequential device arrangement with directional flow. | Soft natural light and consistent exposure. | Simple explanatory headline and benefit. | Explore the ecosystem. | Coherent and restrained; no unsupported interoperability claims. |
+| Product Comparison | Help users understand differences between selected products. | Buyers evaluating alternatives. | Fair, factual side-by-side comparison. | Make verified differences easy to compare. | Two or more selected models. | Compare only matching verified fields. | Clean comparison editorial. | Balanced columns or aligned product silhouettes. | Neutral and consistent light on all products. | Neutral labels and concise factual differences. | Compare models or explore details. | Fair presentation; never invent superiority claims. |
+| Feature Explainer | Explain one specific product feature. | Prospective buyers and existing owners. | Feature, how it works, and user benefit. | Translate a technical feature into a clear visual. | Feature and relevant device. | Feature must be verified for the selected model. | Technical editorial with simple visual metaphor. | Feature focal point supported by device view. | Directional light to clarify the subject. | Feature name and short explanation. | Learn more about the feature. | Precise, accessible, no exaggerated performance. |
+| Technical Specifications | Present selected technical specifications accurately. | Detail-oriented buyers and researchers. | Specification-led content using exact source data. | Improve readability of technical facts. | Product and selected specification set. | Use exact CSV values; mark unavailable data as unavailable. | Minimal data-led product editorial. | Structured specification blocks around product hero. | Neutral studio light and high text contrast. | Exact units, concise labels, no unsupported rounding. | View full specifications. | Technical accuracy and visual restraint. |
+| Beginner's Guide | Introduce a product or ecosystem for first-time users. | First-time Apple buyers and new users. | Simple introduction with essential concepts. | Reduce complexity and build confidence. | Relevant device and beginner task. | Focus on the selected product's verified basics. | Friendly premium editorial. | One hero device with simple supporting callouts. | Soft, welcoming daylight. | Plain English, short sentences, jargon explained. | Start exploring. | Welcoming, premium, never condescending. |
+| iOS & Software Features | Explain a software feature or workflow. | iPhone users and productivity-focused audiences. | Feature-led software education. | Show the purpose and interaction clearly. | Verified software interface and device. | Check model and OS compatibility before claims. | Crisp UI-focused design. | Screen area as focal point with concise annotations. | Screen-safe exposure and controlled reflections. | Clear feature name and practical benefit. | Explore the feature. | Faithful interface; do not invent controls or menus. |
+| Apple Intelligence | Explain a supported Apple Intelligence capability. | Eligible device owners and technology adopters. | Capability and user benefit with eligibility caveats. | Communicate the feature without overpromising. | Compatible device and relevant AI workflow. | Verify supported model, language, region, and OS when relevant. | Clean, intelligent, restrained technology visual. | Device with a simple contextual visualization. | Soft luminous highlights, natural contrast. | Specific capability wording and clear limitations. | Learn about Apple Intelligence. | No unsupported AI claims or guaranteed outcomes. |
+| Privacy & Security | Explain a privacy or security feature accurately. | Privacy-conscious users and general consumers. | Trust-building educational explanation. | Make a security concept approachable. | Relevant device setting or privacy feature. | Only show supported settings and behavior. | Calm, clean interface-led visual. | One clear feature with minimal supporting symbols. | Balanced soft lighting and high legibility. | Precise, non-alarmist explanatory copy. | Learn how to manage privacy. | Responsible claims; never promise absolute security. |
+| Compatibility Guide | Explain compatibility between devices, accessories, or software. | Buyers checking device and accessory fit. | Compatibility matrix or pairing explanation. | Prevent confusion and incorrect purchases. | Devices and compatible accessories. | Use only explicit CSV compatibility facts. | Structured product compatibility editorial. | Clearly paired items with labels and status. | Neutral even lighting. | Exact model names and concise compatibility notes. | Check compatibility. | Factual, transparent, no implied compatibility. |
+| Battery & Performance | Explain verified battery or performance information. | Heavy users, professionals, and product researchers. | Explain one supported battery or performance benefit. | Make technical value understandable. | Relevant product and performance context. | Use only verified metrics and conditions. | Premium technical product editorial. | Device hero with one clear data or use-case focus. | Controlled contrast and crisp product highlights. | Qualified, factual copy with units and conditions. | Explore performance details. | No unsupported benchmarks or guaranteed battery duration. |
 
 ## 3. Campaign & Promotion
 
-Fokus: kampanye pemasaran, penawaran, dan aktivitas promosi.
+**Category Name:** Campaign & Promotion  
+**Category Objective:** Communicate campaigns, offers, launches, and store activities without fabricating commercial terms.
 
-- New Product Launch
-- Product Announcement
-- Seasonal Campaign
-- Special Events
-- Promotional Information
-- Exclusive Offers
-- Limited-Time Promotion
-- Price Highlight
-- Product Bundle
-- Trade-In Campaign
-- Financing & Installment
-- Gift & Rewards
-- Store Experience Campaign
-- Call-to-Action Campaign
+| Subcategory Name | Content Objective | Target Audience | Content Direction | Visual Objective | Main Subject | Product Relevance | Visual Direction | Composition Direction | Lighting Direction | Text Direction | CTA Direction | Brand Direction |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| New Product Launch | Announce a new product or confirmed arrival. | Existing fans and prospective buyers. | Launch announcement using confirmed product facts. | Create anticipation and immediate product recognition. | Newly launched verified product. | Product must be present in CSV or confirmed input. | Premium reveal-style product photography. | Hero product with reserved headline space. | Dramatic but controlled rim lighting. | Short launch headline and confirmed product name. | Discover the new product. | Premium, factual, no invented launch date or availability. |
+| Product Announcement | Share a confirmed product or lineup announcement. | Apple audience and interested shoppers. | News-like product announcement. | Communicate the announcement clearly. | Announced product or lineup. | Use only confirmed models and details. | Clean editorial announcement visual. | Strong title-product hierarchy. | Neutral studio lighting. | Announcement headline and concise facts. | Learn more. | Accurate, restrained, no unsupported official claims. |
+| Seasonal Campaign | Connect products to a seasonal shopping moment. | Seasonal shoppers and gift buyers. | Seasonal theme with relevant products or confirmed offers. | Create seasonal relevance without losing product focus. | Relevant product and seasonal context. | Use verified products; promotions only when supplied or confirmed. | Elegant seasonal editorial. | Product hero with subtle seasonal accents. | Warm controlled light appropriate to season. | Seasonal headline and optional verified offer. | Explore the collection. | Seasonal accents remain subtle and premium. |
+| Special Events | Promote a confirmed event or store activity. | Local customers and event participants. | Event information and experience-led invitation. | Make event purpose and essential details visible. | Event setting, activity, or relevant device. | Product appears only if relevant to event. | Premium event editorial. | Clear event title with date/location hierarchy. | Natural or event-appropriate lighting. | Exact event name, date, time, and venue when supplied. | Register or learn more, if applicable. | Do not invent event details or official endorsement. |
+| Promotional Information | Explain the terms of a confirmed promotion. | Price-conscious buyers and existing customers. | Transparent offer explanation. | Make offer mechanics easy to understand. | Product and confirmed promotion. | Product and offer must match supplied or verified facts. | Clean offer-led commercial visual. | Product hero with distinct offer information zone. | Bright, neutral lighting. | Exact terms, dates, exclusions, and price source. | View offer details. | Transparent; never fabricate savings or urgency. |
+| Exclusive Offers | Communicate a verified exclusive offer. | Eligible customers and targeted shoppers. | Exclusive offer with eligibility clarity. | Establish value and conditions. | Product and confirmed exclusive offer. | No invented exclusivity or availability. | Refined promotional product visual. | Product focal point with clear offer hierarchy. | Premium studio light with controlled accent. | State verified offer and eligibility. | Explore the offer. | No false scarcity or unsupported exclusivity. |
+| Limited-Time Promotion | Communicate a real time-limited offer. | Shoppers considering a near-term purchase. | Urgency based only on confirmed campaign dates. | Make the deadline clear without misleading pressure. | Product and time-limited offer. | Exact product, dates, and terms must be confirmed. | Bold but minimal promotion visual. | Product hero plus deadline and offer block. | High-contrast commercial lighting. | Exact end date; avoid unsupported countdowns. | View the promotion. | Honest urgency; no invented expiry. |
+| Price Highlight | Focus attention on a confirmed or estimated price. | Price-comparing shoppers. | Price-led product communication. | Make the price clear and correctly qualified. | Product with price information. | Check CSV price first; AI estimate only if unavailable. | Minimal price-focused product visual. | Product and price balanced with strong hierarchy. | Neutral lighting for product and typography. | MYR price; label estimates as Estimated Price and unverified. | Explore pricing details. | Never present estimates as official store prices. |
+| Product Bundle | Present a verified bundle or product combination. | Buyers interested in multi-item purchases. | Bundle explanation with exact included items. | Clarify what is and is not included. | Confirmed bundle products/accessories. | Bundle composition must be explicitly supplied or verified. | Curated product still life. | Grouped products with clear item hierarchy. | Consistent studio lighting. | Exact bundle contents and conditions. | Explore the bundle. | Do not imply accessories are included without proof. |
+| Trade-In Campaign | Explain a confirmed trade-in program. | Existing device owners considering an upgrade. | Trade-in value proposition with eligibility clarity. | Show upgrade journey and trade-in concept. | New product and old device concept. | Trade-in terms and values must be supplied or verified. | Clean upgrade-focused editorial. | Old-to-new visual transition with clear hierarchy. | Balanced studio lighting. | Explain that value and eligibility depend on assessment when applicable. | Check trade-in eligibility. | No guaranteed trade-in value unless confirmed. |
+| Financing & Installment | Explain a verified financing or installment option. | Buyers considering payment flexibility. | Financing information with exact provider terms. | Make payment options understandable and transparent. | Product and payment-plan information. | Rate, tenure, provider, and eligibility must be verified. | Premium commercial visual with restrained numeric hierarchy. | Product hero plus legible payment detail. | Clean, neutral lighting. | Exact terms, conditions, and qualification. | View payment options. | No misleading zero-interest or approval claims. |
+| Gift & Rewards | Promote confirmed gifts, rewards, or loyalty benefits. | Gift buyers and eligible customers. | Reward-led campaign with clear conditions. | Show the reward and qualifying product or action. | Confirmed gift/reward and relevant product. | Gift availability and conditions must be supplied or verified. | Elegant gift-oriented still life. | Product and reward separated clearly. | Soft celebratory lighting. | Exact reward, eligibility, and campaign dates. | Discover rewards. | Avoid implying guaranteed gifts without terms. |
+| Store Experience Campaign | Promote a real in-store experience. | Local visitors and Apple Store Malaysia customers. | Store visit, service, or experience-led campaign. | Communicate the experience and location. | Store environment or confirmed activity. | Product shown only when relevant to the experience. | Premium architectural or lifestyle photography. | Store context with focal experience and location cue. | Natural architectural light. | Exact store name and verified experience details. | Visit the store or learn more. | Do not imply unsupported Apple corporate affiliation. |
+| Call-to-Action Campaign | Encourage one specific user action. | Audience matched to campaign objective. | Single-action conversion message. | Make the next step unmistakable. | Relevant product, offer, or store experience. | Subject must match the requested action. | Focused, high-clarity campaign visual. | Strong hero and prominent CTA zone. | High-contrast readable lighting. | One clear action phrase and concise reason. | AI chooses CTA based on category and objective. | Avoid aggressive or misleading claims. |
 
 ## 4. Tips, Tricks & Hacks
 
-Fokus: tips praktis, produktivitas, dan solusi penggunaan perangkat Apple.
+**Category Name:** Tips, Tricks & Hacks  
+**Category Objective:** Deliver practical tips, workflows, and solutions that help users get more from Apple devices.
 
-- iPhone Hacks
-- Camera Tips
-- Productivity Hacks
-- Apple Watch Tips
-- MacBook Shortcuts
-- iPhone Photography
-- Video Recording Tips
-- Camera Settings
-- Battery Optimization
-- iPhone Customization
-- iCloud Tips
-- Apple Watch Productivity
-- Mac Productivity
-- Cross-Device Workflow
-- Troubleshooting Tips
+| Subcategory Name | Content Objective | Target Audience | Content Direction | Visual Objective | Main Subject | Product Relevance | Visual Direction | Composition Direction | Lighting Direction | Text Direction | CTA Direction | Brand Direction |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| iPhone Hacks | Share a useful iPhone shortcut or lesser-known workflow. | iPhone owners and power users. | One actionable iPhone workflow. | Show the action and outcome clearly. | iPhone and verified feature interaction. | Confirm feature availability for relevant iOS version. | Crisp device-led instructional visual. | Phone screen or action as focal point. | Bright screen-safe lighting. | Short hack title and simple steps. | Try this iPhone tip. | Practical, accurate, uncluttered. |
+| Camera Tips | Improve photo capture using a verified camera control or technique. | Everyday photographers and iPhone users. | One camera technique with practical outcome. | Visually explain the technique. | iPhone camera and sample scene. | Use supported camera capabilities only. | Editorial photography with clear subject separation. | Camera device plus visual result. | Natural light suited to photography. | Technique headline and concise setting guidance. | Try the camera tip. | Do not imply unsupported camera controls. |
+| Productivity Hacks | Teach a workflow that saves time or reduces friction. | Students, professionals, and creators. | One repeatable productivity workflow. | Show before/after or workflow sequence. | Relevant Apple device and task. | Workflow must be supported by product/software facts. | Minimal productivity editorial. | Clear sequence with device focal point. | Bright, even working-environment light. | Outcome-led headline and short steps. | Try the workflow. | Helpful and factual. |
+| Apple Watch Tips | Share a useful watch setting or workflow. | Apple Watch owners and prospective users. | One watch-specific practical tip. | Make the watch action recognizable. | Apple Watch and verified interaction. | Confirm model/software compatibility. | Close-up wrist and interface editorial. | Watch face or control as focal point. | Soft highlights with legible display. | Short tip and clear action. | Try this Apple Watch tip. | No unsupported health or safety claims. |
+| MacBook Shortcuts | Teach a keyboard shortcut or Mac workflow. | Mac users, students, and professionals. | One shortcut or efficient workflow. | Make keyboard action easy to follow. | MacBook keyboard and relevant screen. | Verify shortcut and macOS context. | Clean desk and close-up editorial. | Keyboard/screen pairing with focused annotation. | Soft directional light without screen glare. | Exact shortcut notation and outcome. | Try the shortcut. | Precise notation and minimal layout. |
+| iPhone Photography | Teach a photography approach using iPhone. | Mobile photographers and creators. | Practical shooting technique. | Connect camera settings to visual outcome. | iPhone and photographic subject. | Use only supported camera modes and controls. | Premium lifestyle photography. | Phone secondary to result image where useful. | Natural light matching the technique. | Technique-led headline and brief instruction. | Explore more photography tips. | Authentic photographic result; no false camera claim. |
+| Video Recording Tips | Explain a video capture technique. | Creators, students, and everyday video makers. | One recording tip and its effect. | Demonstrate framing, motion, or setting. | iPhone camera and recording scene. | Verify supported resolution, frame rate, and modes. | Cinematic but instructional visual. | Device and recording subject in a clear relationship. | Controlled practical light. | Exact setting where verified; short benefit. | Try the recording tip. | No unsupported professional-production promises. |
+| Camera Settings | Explain a specific camera setting and when to use it. | iPhone users interested in camera control. | Setting-focused education. | Make the setting and effect easy to compare. | Camera interface and photo result. | Setting must exist on the relevant model/OS. | Interface-led photography editorial. | Setting callout paired with outcome. | Screen-safe, neutral illumination. | Exact setting label and use case. | Explore camera settings. | Faithful interface and factual wording. |
+| Battery Optimization | Share safe, practical battery-use guidance. | iPhone, iPad, Mac, and Watch users. | One supported battery-management habit. | Communicate the setting or habit clearly. | Relevant device and battery setting. | Avoid unsupported battery-life guarantees. | Calm utility-focused editorial. | Device with one highlighted setting or habit. | Soft balanced lighting. | Practical advice with any relevant caveat. | Review battery settings. | Responsible, non-alarmist guidance. |
+| iPhone Customization | Show a supported way to personalize iPhone. | iPhone owners and design-oriented users. | One customization idea or setup. | Inspire while showing achievable settings. | iPhone screen and personalization example. | Verify supported controls and OS version. | Colorful but restrained interface editorial. | Phone hero with a clear screen focal point. | Even screen-friendly light. | Customization headline and short how-to. | Personalize your iPhone. | Accurate UI, no fabricated widgets. |
+| iCloud Tips | Explain a practical iCloud use or setting. | Apple ecosystem users. | One iCloud workflow or management tip. | Clarify cloud-device relationship. | Device and iCloud-related workflow. | Use verified iCloud capabilities and conditions. | Clean connected-device visual. | Device with subtle cloud/workflow cues. | Soft, clear lighting. | Simple explanation and relevant storage/account caveat. | Explore iCloud settings. | No misleading storage or privacy guarantees. |
+| Apple Watch Productivity | Show a watch-based productivity workflow. | Professionals and Apple Watch owners. | One practical notification, reminder, or workflow tip. | Make the benefit visible in context. | Apple Watch and verified productivity feature. | Verify supported feature and device compatibility. | Minimal lifestyle close-up. | Watch focal point with restrained context. | Natural daylight or soft studio light. | Action and productivity benefit in concise English. | Try the workflow. | Useful and accurate; avoid medical claims. |
+| Mac Productivity | Teach an efficient Mac task or workflow. | Mac users, students, and professionals. | One repeatable Mac workflow. | Make the workflow clear and useful. | Mac device and relevant app/interface. | Verify macOS and hardware compatibility. | Premium workspace editorial. | Screen and input devices arranged with clear hierarchy. | Soft directional workspace light. | Short outcome-led headline and steps. | Try this Mac workflow. | Clean, precise, no invented interface. |
+| Cross-Device Workflow | Explain a supported workflow across Apple devices. | Multi-device Apple users. | Connected task across two or more devices. | Show the sequence and handoff clearly. | Relevant devices in workflow order. | Confirm supported continuity and compatibility requirements. | Connected lifestyle editorial. | Devices arranged in a clear directional sequence. | Consistent natural light across scene. | Workflow headline and concise steps. | Explore the workflow. | Accurate ecosystem depiction without overclaiming. |
+| Troubleshooting Tips | Help users resolve a common device issue safely. | Existing Apple users seeking practical help. | Symptom, safe check, and next step. | Make troubleshooting steps calm and scannable. | Relevant device and setting. | Use safe, verified steps; escalate when necessary. | Clear support-style editorial. | Device plus ordered steps; avoid clutter. | Bright neutral light. | Symptom-led headline and concise instructions. | Follow the steps or contact support. | Helpful, responsible, never imply guaranteed repair. |
+
+---
+
+## Attribute completeness
+
+Each subcategory row contains the following 13 table columns plus its parent category heading, for all 14 required attributes:
+
+1. Category Name — parent category heading.
+2. Subcategory Name — first table column.
+3. Content Objective.
+4. Target Audience.
+5. Content Direction.
+6. Visual Objective.
+7. Main Subject.
+8. Product Relevance.
+9. Visual Direction.
+10. Composition Direction.
+11. Lighting Direction.
+12. Text Direction.
+13. CTA Direction.
+14. Brand Direction.
+
+**Total:** 4 categories, 56 subcategories, 14 attributes per subcategory.
